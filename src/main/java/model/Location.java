@@ -12,6 +12,7 @@ public class Location {
 	int x;
 	int y;
 	Type type;
+	Building building;
 	
 	Set<Person> persons;
 	

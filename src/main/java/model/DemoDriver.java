@@ -17,7 +17,7 @@ public class DemoDriver {
 		map.seedBuilding(Type.WORK);
 		map.seedBuilding(Type.PUBLIC);
 		map.addPeople(100);
-		
+		map.publicEventBuilding = map.public_places.get(0);
         JFrame frame = new JFrame("My Drawing");
         GUICanvas canvas = new GUICanvas();
         canvas.setPreferredSize(new Dimension(SIZE*10, SIZE*10));

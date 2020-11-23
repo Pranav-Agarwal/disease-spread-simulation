@@ -15,10 +15,10 @@ public class Map {
 	static Set<Person> persons;
 	static int size;
 	static char[][] map;
-	static HashMap location2Building;
-	static List<List<Location>> houses = new ArrayList<>();
-	static List<List<Location>> offices = new ArrayList<>();
-	static List<List<Location>> public_places = new ArrayList<>();
+	static List<Building> houses = new ArrayList<>();
+	static List<Building> offices = new ArrayList<>();
+	static List<Building> public_places = new ArrayList<>();
+	static Building publicEventBuilding;
 	
 	public Map(int size) {
 		Map.size = size;
@@ -34,11 +34,14 @@ public class Map {
 	public void addPeople(int count) {
 		Random random = new Random();
 		for(int i=0;i<count;i++) {
-			List<Location> houseList =   houses.get(random.nextInt(houses.size()));
-			Location house = houseList.get(random.nextInt(houseList.size()));
-			List<Location> officeList =   offices.get(random.nextInt(offices.size()));
-			Location office = officeList.get(random.nextInt(officeList.size()));
-			persons.add(new Person(house,office));
+			HouseBuilding house =   (HouseBuilding) houses.get(random.nextInt(houses.size()));
+			Location houseLocation = house.locations.get(random.nextInt(house.locations.size()));
+			OfficeBuilding office =   (OfficeBuilding) offices.get(random.nextInt(offices.size()));
+			Location officeLocation = office.locations.get(random.nextInt(office.locations.size()));
+			Person newPerson = new Person(houseLocation,officeLocation);
+			persons.add(newPerson);
+			house.residents.add(newPerson);
+			office.workers.add(newPerson);
 		}
 	}
 	
@@ -50,17 +53,23 @@ public class Map {
 				if(type==Type.HOUSE && t<0.005) {
 					List<Location> locations = new ArrayList<>();
 					spreadBuilding(locations,100,i,j,type,0.1,0.1);
-					if(locations.size()>0) houses.add(locations);
+					if(locations.size()>0) {
+						houses.add(new HouseBuilding(locations));
+					}
 				}
 				else if(type==Type.WORK && t<0.002) {
 					List<Location> locations = new ArrayList<>();
 					spreadBuilding(locations,100,i,j,type,0.45,0.6);
-					if(locations.size()>0) offices.add(locations);
+					if(locations.size()>0) {
+						offices.add(new OfficeBuilding(locations));
+					}
 				}
 				else if(type==Type.PUBLIC && t<0.001) {
 					List<Location> locations = new ArrayList<>();
 					spreadBuilding(locations,100,i,j,type,0.7,0.8);
-					if(locations.size()>0) public_places.add(locations);
+					if(locations.size()>0) {
+						public_places.add(new PublicBuilding(locations));
+					}
 				}
 			}	
 		}
@@ -91,14 +100,4 @@ public class Map {
 		}
 	}
 	
-	public void refreshAndPrintMap() {
-		for(int i=0;i<size;i++) {
-			for(int j=0;j<size;j++) {
-				if(grid[i][j].persons.size()==0) System.out.print("- ");
-				else System.out.print("O ");
-			}
-			System.out.println();
-		}
-		System.out.println();
-	}
 }

@@ -25,35 +25,24 @@ public class GUICanvas extends JPanel{
     			else if(cell.type==Type.WORK) g.setColor(new Color(255,165,0));
     			else if(cell.type==Type.PUBLIC) g.setColor(new Color(0,255,0));
     			else g.setColor(new Color(100,100,100));
-    			boxSquare(g, new Rectangle(cell.x*10,cell.y*10,10,10));
+    			drawLocation(g, new Rectangle(cell.x*10,cell.y*10,10,10));
     		}
     	}
     	
     	for(Person p : Map.persons) {
-    		boxOval(g, new Rectangle(p.x*10,p.y*10,10,10));
+    		if(p.isInfected) g.setColor(new Color(255,0,0));
+    		else g.setColor(new Color(0,0,0));
+    		drawPerson(g, new Rectangle(p.x*10,p.y*10,10,10));
     	}
     }
     
 
-	public void boxOval(Graphics g, Rectangle bb) {
-		g.setColor(new Color(0,0,0));
+	public void drawPerson(Graphics g, Rectangle bb) {
 	    g.fillOval(bb.x, bb.y, bb.width, bb.height);
 	}
 	
-	public void boxSquare(Graphics g, Rectangle bb) {
+	public void drawLocation(Graphics g, Rectangle bb) {
 		g.fillRect(bb.x, bb.y, bb.width, bb.height);
-	}
-	
-	public void paintCity(Graphics g) {
-    	for(Location[] row : Map.grid) {
-    		for(Location cell:row) {
-    			if(cell.type==Type.HOUSE) g.setColor(new Color(0,0,255));
-    			else if(cell.type==Type.WORK) g.setColor(new Color(255,165,0));
-    			else if(cell.type==Type.PUBLIC) g.setColor(new Color(0,255,0));
-    			else g.setColor(new Color(100,100,100));
-    			boxSquare(g, new Rectangle(cell.x*10,cell.y*10,10,10));
-    		}
-    	}
 	}
 
 	

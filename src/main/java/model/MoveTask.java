@@ -24,7 +24,10 @@ public class MoveTask extends Task {
 		}
 		Location newLocation = Map.grid[person.x][person.y];
 		newLocation.persons.add(person);
-		if(newLocation.building!=null) newLocation.building.persons.add(person);
+		if(newLocation.building!=null) {
+			newLocation.building.persons.add(person);
+			//System.out.println(newLocation.building.persons.size());
+		}
 		person.currentLocation = newLocation;
 		if(person.x==destination.x && person.y == destination.y) {
 			person.state = State.WORKING;

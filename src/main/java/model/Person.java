@@ -31,7 +31,7 @@ public class Person {
 	
 	public void update() {
 		//System.out.println(x+" "+y+" "+home.x+" "+home.y+" "+workplace.x+" "+workplace.y+" "+tasks.size()+" "+currentLocation.x+" "+currentLocation.y);
-		if(isInfected && state==State.MOVING) infectInTransit();
+		//if(isInfected && state==State.MOVING) infectInTransit();
 		if(tasks.size()<2 && Math.random()<0.001) {
 			tasks.clear();
 			tasks.add(new MoveTask(this,pickPublicLocation()));
@@ -50,13 +50,13 @@ public class Person {
 		else if(tasks.peek().run()) tasks.remove();
 	}
 	
-	public void tryToInfect(Person spreader, Person victim) {
-		
+	public void tryToInfect(Person spreader) {
+		if(Math.random()<1) isInfected=true; 
 	}
 	
 	private void infectInTransit() {
 		for(Person p : currentLocation.persons) {
-			if(!p.isInfected) tryToInfect(this,p);
+			if(!p.isInfected) p.tryToInfect(this);
 		}
 	}
 	

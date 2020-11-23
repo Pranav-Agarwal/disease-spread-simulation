@@ -16,6 +16,7 @@ public class Simulator extends TimerTask{
 	public void run() {
 		//map.refreshAndPrintMap();
 		map.update();
+		map.spreadDisease();
 		canvas.repaint();
 	}
 

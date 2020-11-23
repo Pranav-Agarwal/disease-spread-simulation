@@ -31,11 +31,11 @@ public class Person {
 		if(tasks.isEmpty()) {
 			if(currentLocation == home) {
 				tasks.add(new MoveTask(this,workplace));
-				tasks.add(new WorkTask(this,5));
+				tasks.add(new WorkTask(this,500));
 			}
 			if(currentLocation == workplace) {
 				tasks.add(new MoveTask(this,home));
-				tasks.add(new WorkTask(this,5));
+				tasks.add(new WorkTask(this,200));
 			}
 		}
 		else if(tasks.peek().run()) tasks.remove();

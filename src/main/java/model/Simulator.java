@@ -5,15 +5,18 @@ import java.util.TimerTask;
 public class Simulator extends TimerTask{
 
 	public Map map;
+	public GUICanvas canvas;
 	
-	public Simulator(Map map) {
+	public Simulator(Map map,GUICanvas canvas) {
 		this.map = map;
+		this.canvas = canvas;
 	}
 	
 	@Override
 	public void run() {
-		map.refreshAndPrintMap();
+		//map.refreshAndPrintMap();
 		map.update();
+		canvas.repaint();
 	}
 
 }

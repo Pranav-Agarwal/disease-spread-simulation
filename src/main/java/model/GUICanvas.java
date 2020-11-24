@@ -21,24 +21,29 @@ public class GUICanvas extends JPanel{
     	super.paintComponent(g);
     	for(Location[] row : Map.grid) {
     		for(Location cell:row) {
-    			if(cell.type==Type.HOUSE) g.setColor(new Color(255,242,72));
+    			if(cell.type==Type.HOUSE) g.setColor(new Color(248, 252, 3));
     			else if(cell.type==Type.WORK) g.setColor(new Color(255,165,0));
     			else if(cell.type==Type.PUBLIC) g.setColor(new Color(0,255,0));
-    			else g.setColor(new Color(100,100,100));
-    			drawLocation(g, new Rectangle(cell.x*10,cell.y*10,10,10));
+    			else g.setColor(new Color(200,200,200));
+    			drawLocation(g, new Rectangle(cell.x*3,cell.y*3,3,3));
     		}
     	}
     	
     	for(Person p : Map.persons) {
-    		if(p.isInfected) g.setColor(new Color(255,0,0));
-    		else g.setColor(new Color(0,0,0));
-    		drawPerson(g, new Rectangle(p.x*10,p.y*10,10,10));
+    		if(p.isDead) continue;
+    		else if(p.isQuarantined) g.setColor(new Color(240, 3, 252));
+    		else if(p.isInfected) g.setColor(new Color(255,0,0));
+    		else if(p.isImmune) g.setColor(new Color(3, 173, 252));
+    		else g.setColor(new Color(255,255,255));
+    		drawPerson(g, new Rectangle(p.x*3,p.y*3,5,5));
     	}
     }
     
 
 	public void drawPerson(Graphics g, Rectangle bb) {
 	    g.fillOval(bb.x, bb.y, bb.width, bb.height);
+	    g.setColor(new Color(0,0,0));
+	    g.drawOval(bb.x, bb.y, bb.width, bb.height);
 	}
 	
 	public void drawLocation(Graphics g, Rectangle bb) {

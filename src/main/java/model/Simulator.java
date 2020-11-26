@@ -22,6 +22,7 @@ public class Simulator extends TimerTask{
 		if(simTicks%10==0) map.spreadDisease();	
 		//if(simTicks>500) map.lockdownBuildings(Map.offices);
 		//if(simTicks>700) map.lockdownBuildings(Map.public_places);
+		//if(simTicks>500) map.enforceQuarantine();
 		canvas.repaint();
 	}
 

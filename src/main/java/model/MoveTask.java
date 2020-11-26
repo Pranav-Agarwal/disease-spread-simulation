@@ -17,10 +17,10 @@ public class MoveTask extends Task {
 		oldLocation.persons.remove(person);
 		if(oldLocation.building!=null) oldLocation.building.persons.remove(person);
 		if(person.x != destination.x) {
-			person.x+=(person.speed)*Math.signum(destination.x-person.x);
+			person.x+=Math.signum(destination.x-person.x);
 		}
 		if(person.y != destination.y) {
-			person.y+=(person.speed)*Math.signum(destination.y-person.y);
+			person.y+=Math.signum(destination.y-person.y);
 		}
 		Location newLocation = Map.grid[person.x][person.y];
 		newLocation.persons.add(person);

@@ -12,18 +12,21 @@ import model.Location.Type;
 import model.Person.State;
 
 public class Map {
+	
 	static Location[][] grid;
 	static Set<Person> persons;
-	static int size;
-	static char[][] map;
 	static List<Building> houses = new ArrayList<>();
 	static List<Building> offices = new ArrayList<>();
 	static List<Building> public_places = new ArrayList<>();
 	static Building publicEventBuilding;
-	static Boolean contactTracing = true;
+	static Boolean contactTracing = false;
 	
-	public Map(int size) {
-		Map.size = size;
+	//properties
+	static int size;
+	
+	
+	public Map() {
+		Map.size = simulationConfig.size;
 		persons = new HashSet<>();
 		grid = new Location[size][size];
 		for(int i=0;i<size;i++) {
@@ -36,15 +39,28 @@ public class Map {
 	public void addPeople(int count) {
 		Random random = new Random();
 		for(int i=0;i<count;i++) {
-			HouseBuilding house =   (HouseBuilding) houses.get(random.nextInt(houses.size()));
-			Location houseLocation = house.locations.get(random.nextInt(house.locations.size()));
-			OfficeBuilding office =   (OfficeBuilding) offices.get(random.nextInt(offices.size()));
-			Location officeLocation = office.locations.get(random.nextInt(office.locations.size()));
-			Person newPerson = new Person(houseLocation,officeLocation);
+			Building house = houses.get(random.nextInt(houses.size()));
+			Building office = pickRandomOffice(house);
+			Person newPerson = new Person(house.locations.get(random.nextInt(house.locations.size())),office.locations.get(random.nextInt(office.locations.size())));
 			persons.add(newPerson);
-			house.residents.add(newPerson);
-			office.workers.add(newPerson);
+			((HouseBuilding)house).residents.add(newPerson);
+			((OfficeBuilding)office).workers.add(newPerson);
 		}
+	}
+	
+	private Building pickRandomOffice(Building b){
+		Random random = new Random();
+		Building ans = offices.get(0);
+		int minScore = Integer.MAX_VALUE;
+		for(Building o : offices) {
+			int score = random.nextInt(simulationConfig.closenessFactor) + Utils.getDistance(b,o);
+			if(score<minScore) {
+				minScore = score;
+				ans = o;
+			}
+		}
+		return ans;
+		
 	}
 	
 	public void seedVirus(int count) {
@@ -56,37 +72,55 @@ public class Map {
 		}
 	}
 	
-	public void seedBuilding(Type type) {
-		for(int i=1;i<size-1;i++) {
-			for(int j=1;j<size-1;j++) {
-				double t = Math.random();
-				if(grid[i][j].building!=null) continue;
-				if(type==Type.HOUSE && t<0.005) {
-					List<Location> locations = new ArrayList<>();
-					Building b = new HouseBuilding(locations);
-					spreadBuilding(b, locations,100,i,j,type,0.3,0.3);
-					if(locations.size()>0) {
-						houses.add(b);
-					}
+	public void seedBuilding(Type type, int count, double minSize, double maxSize) {
+		int tries = 0;
+		Random random = new Random();
+		int placed = 0;
+		while(placed<=count && tries<=count*5) {
+			tries++;
+			int randX = random.nextInt(size);
+			int randY = random.nextInt(size);
+			if(grid[randX][randY].building!=null) continue;
+			List<Location> locations = new ArrayList<>();
+			if(type==Type.PUBLIC) {
+				Building b = new PublicBuilding(locations);
+				spreadBuilding(b,locations,100,randX,randY,type,minSize, maxSize);
+				if(locations.size()>0) {
+					public_places.add(b);
+					placed++;
 				}
-				else if(type==Type.WORK && t<0.001) {
-					List<Location> locations = new ArrayList<>();
-					Building b = new OfficeBuilding(locations);
-					spreadBuilding(b, locations,10,3,i,j,type);
-					if(locations.size()>0) {
-						offices.add(b);
-					}
-				}
-				else if(type==Type.PUBLIC && t<0.001) {
-					List<Location> locations = new ArrayList<>();
-					Building b = new PublicBuilding(locations);
-					spreadBuilding(b, locations,100,i,j,type,0.8,0.9);
-					if(locations.size()>0) {
-						public_places.add(b);
-					}
-				}
-			}	
+			}
 		}
+	}
+	
+	public void seedBuilding(Type type, int count, int buildingSize, int sizeVariation) {
+		int tries = 0;
+		Random random = new Random();
+		int placed = 0;
+		while(placed<=count && tries<=count*5) {
+			tries++;
+			int randX = random.nextInt(size);
+			int randY = random.nextInt(size);
+			if(grid[randX][randY].building!=null) continue;
+			List<Location> locations = new ArrayList<>();
+			if(type==Type.HOUSE) {
+				Building b = new HouseBuilding(locations);
+				spreadBuilding(b, locations,buildingSize,sizeVariation,randX,randY,type);
+				if(locations.size()>0) {
+					houses.add(b);
+					placed++;
+				}
+			}
+			if(type==Type.WORK) {
+				Building b = new OfficeBuilding(locations);
+				spreadBuilding(b, locations,buildingSize,sizeVariation,randX,randY,type);
+				if(locations.size()>0) {
+					offices.add(b);
+					placed++;
+				}
+			}
+		}
+
 	}
 	
 	/**

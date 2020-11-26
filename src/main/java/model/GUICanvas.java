@@ -2,9 +2,12 @@ package model;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import javax.swing.JFrame;
@@ -14,27 +17,38 @@ import model.Location.Type;
 
 public class GUICanvas extends JPanel{
 	
+	private static int size;
 	
 	public GUICanvas() {
+		size = simulationConfig.size;
+		this.setPreferredSize(new Dimension(size*3, size*3));
 	}
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
-    	for(Location[] row : Map.grid) {
-    		for(Location cell:row) {
-    			if(cell.type==Type.HOUSE) g.setColor(new Color(248, 252, 3));
-    			else if(cell.type==Type.WORK) g.setColor(new Color(255,165,0));
-    			else if(cell.type==Type.PUBLIC) g.setColor(new Color(0,255,0));
-    			else g.setColor(new Color(200,200,200));
-    			drawLocation(g, new Rectangle(cell.x*3,cell.y*3,3,3));
+    	for(int i=0;i<Map.size;i++) {
+    		for(int j=0;j<Map.size;j++) {
+    			Location cell = Map.grid[i][j];
+    			int[] borders = new int[4];
+    			if(cell.building!=null) {
+	    			if(i>0) borders[0]=((Map.grid[i-1][j].building!=cell.building)?1:0);
+	    			if(j>0) borders[1]=(Map.grid[i][j-1].building!=cell.building?1:0);
+	    			if(i<Map.size-1) borders[2]=(Map.grid[i+1][j].building==null?1:0);
+	    			if(j<Map.size-1) borders[3]=(Map.grid[i][j+1].building==null?1:0);
+    			}
+    			if(cell.type==Type.HOUSE) g.setColor(Color.decode(simulationConfig.houseColor));
+    			else if(cell.type==Type.WORK) g.setColor(Color.decode(simulationConfig.officeColor));
+    			else if(cell.type==Type.PUBLIC) g.setColor(Color.decode(simulationConfig.publicColor));
+    			else g.setColor(Color.decode(simulationConfig.roadColor));
+    			drawLocation(g, new Rectangle(cell.x*3,cell.y*3,3,3), borders);
     		}
     	}
     	
     	for(Person p : Map.persons) {
     		if(p.isDead) continue;
-    		else if(p.isQuarantined) g.setColor(new Color(240, 3, 252));
-    		else if(p.isInfected) g.setColor(new Color(255,0,0));
-    		else if(p.isImmune) g.setColor(new Color(3, 173, 252));
-    		else g.setColor(new Color(255,255,255));
+    		else if(p.isQuarantined) g.setColor(Color.decode(simulationConfig.quarantinedColor));
+    		else if(p.isInfected) g.setColor(Color.decode(simulationConfig.infectedColor));
+    		else if(p.isImmune) g.setColor(Color.decode(simulationConfig.immuneColor));
+    		else g.setColor(Color.decode(simulationConfig.personColor));
     		drawPerson(g, new Rectangle(p.x*3,p.y*3,5,5));
     	}
     }
@@ -46,8 +60,13 @@ public class GUICanvas extends JPanel{
 	    g.drawOval(bb.x, bb.y, bb.width, bb.height);
 	}
 	
-	public void drawLocation(Graphics g, Rectangle bb) {
+	public void drawLocation(Graphics g, Rectangle bb, int[] borders) {
 		g.fillRect(bb.x, bb.y, bb.width, bb.height);
+		g.setColor(new Color(0,0,0));
+		if(borders[0]==1) g.fillRect(bb.x, bb.y, 2, bb.height);
+		if(borders[1]==1) g.fillRect(bb.x, bb.y, bb.width, 2);
+		if(borders[2]==1) g.fillRect(bb.x+bb.width-2, bb.y, 2, bb.height);
+		if(borders[3]==1) g.fillRect(bb.x, bb.y+bb.width-2, bb.width, 2);
 	}
 
 	

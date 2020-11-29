@@ -25,21 +25,20 @@ public class Person {
 	Queue<Task> tasks = new LinkedList<>();
 	
 	//config parameters
-	int infectionPeriod;
-	int quarantinePeriod;
-	int incubationPeriod;
-	double chanceToGetSymptoms;
-	double chanceToKill;
+	int infectionPeriod; //virus
+	int quarantinePeriod; //virus
+	int incubationPeriod; //virus
+	double chanceToGetSymptoms; //combo
+	double chanceToKill; //combo
 	double chanceToVisitPublic = 0.1;
 	
 	public Person(Location home, Location workplace) {
 		this.home = home;
 		this.workplace = workplace;
-		this.x = home.x;
-		this.y = home.y;
 		if (Math.random()<0.5) this.currentLocation = home;
 		else this.currentLocation = workplace;
-		
+		this.x = currentLocation.x;
+		this.y = currentLocation.y;
 		infectionPeriod=simulationConfig.infectionPeriod;
 		quarantinePeriod=simulationConfig.quarantinePeriod;
 		incubationPeriod=simulationConfig.incubationPeriod;
@@ -122,10 +121,12 @@ public class Person {
 	}
 	
 	private void takeTest() {
+		
 		if(isInfected && Math.random()<0.8) {
 			isTestedInfected = true;
-			isQuarantined = true;
-			if(Map.contactTracing) {
+			if(simulationConfig.lockdownOnTest) workplace.building.isLockdown=true;
+			if(simulationConfig.quarantineOnTest) isQuarantined = true;
+			if(simulationConfig.contactTracing) {
 				for(Person p : workplace.building.persons) {
 					if(p.isInfected && !p.isTestedInfected) p.takeTest();
 				}

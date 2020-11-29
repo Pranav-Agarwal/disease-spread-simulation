@@ -20,12 +20,13 @@ public class Map {
 	static List<Building> public_places = new ArrayList<>();
 	static Building publicEventBuilding;
 	static Boolean contactTracing = false;
-	
+	static public Map instance;
 	//properties
 	static int size;
 	
 	
 	public Map() {
+		if(instance==null) instance = this;
 		Map.size = simulationConfig.size;
 		persons = new HashSet<>();
 		grid = new Location[size][size];
@@ -160,9 +161,20 @@ public class Map {
 		}
 	}
 	
+	public void createPublicEvent() {
+		publicEventBuilding = public_places.get(new Random().nextInt(public_places.size()));
+	}
+	
+	public void stopPublicEvent() {
+		publicEventBuilding = null;
+	}
+	
 	public void update() {
 		for(Person p:persons) {
 			p.update();
+		}
+		for(Building b : offices) {
+			b.update();
 		}
 	}
 	
@@ -181,13 +193,13 @@ public class Map {
 	
 	public void spreadDisease() {
 		for (Building b : offices) {
-			List<Person> temp = new ArrayList<>(b.persons);
+			List<Person> people_in_building = new ArrayList<>(b.persons);
 			//System.out.println(temp.size());
-			for(int i=0;i<temp.size();i++) {
-				if (!temp.get(i).isInfected || temp.get(i).state==State.MOVING) continue;
-				for(int j=0;j<temp.size();j++) {
-					if(i==j || temp.get(j).isInfected || temp.get(j).state==State.MOVING) continue;
-					temp.get(j).tryToInfect(temp.get(i));
+			for(int spreader=0;spreader<people_in_building.size();spreader++) {
+				if (!people_in_building.get(spreader).isInfected || people_in_building.get(spreader).state==State.MOVING) continue;
+				for(int victim=0;victim<people_in_building.size();victim++) {
+					if(spreader==victim || people_in_building.get(victim).isInfected || people_in_building.get(victim).state==State.MOVING) continue;
+					people_in_building.get(victim).tryToInfect(people_in_building.get(spreader));
 				}
 			}
 		}
@@ -204,17 +216,10 @@ public class Map {
 		}
 	}
 	
+	
 	public void enforceQuarantine() {
 		for(Person p:persons) {
-			if (p.isInfected) {
-				if(contactTracing) {
-					for(Person h : ((HouseBuilding)(p.home.building)).residents) {
-							h.isQuarantined=true;				
-					}
-					for(Person h : ((OfficeBuilding)(p.workplace.building)).workers) {
-							h.isQuarantined=true;
-					}
-				}
+			if (p.isTestedInfected && !p.isImmune) {
 				p.isQuarantined=true;
 			}
 		}

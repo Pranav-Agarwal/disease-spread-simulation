@@ -35,11 +35,15 @@ public class GUICanvas extends JPanel{
 	    			if(i<Map.size-1) borders[2]=(Map.grid[i+1][j].building==null?1:0);
 	    			if(j<Map.size-1) borders[3]=(Map.grid[i][j+1].building==null?1:0);
     			}
-    			if(cell.type==Type.HOUSE) g.setColor(Color.decode(simulationConfig.houseColor));
+    			if(cell.building!=null && cell.building.isLockdown) g.setColor(Color.decode(simulationConfig.lockdownColor));
+    			else if(cell.type==Type.HOUSE) g.setColor(Color.decode(simulationConfig.houseColor));
     			else if(cell.type==Type.WORK) g.setColor(Color.decode(simulationConfig.officeColor));
-    			else if(cell.type==Type.PUBLIC) g.setColor(Color.decode(simulationConfig.publicColor));
+    			else if(cell.type==Type.PUBLIC) {
+    				if(Map.publicEventBuilding==cell.building) g.setColor(Color.decode(simulationConfig.publicEventBuildingColor));
+    				else g.setColor(Color.decode(simulationConfig.publicColor));
+    			}
     			else g.setColor(Color.decode(simulationConfig.roadColor));
-    			drawLocation(g, new Rectangle(cell.x*3,cell.y*3,3,3), borders);
+    			drawLocation(g,cell.x*3,cell.y*3,3,3, borders);
     		}
     	}
     	
@@ -49,24 +53,24 @@ public class GUICanvas extends JPanel{
     		else if(p.isInfected) g.setColor(Color.decode(simulationConfig.infectedColor));
     		else if(p.isImmune) g.setColor(Color.decode(simulationConfig.immuneColor));
     		else g.setColor(Color.decode(simulationConfig.personColor));
-    		drawPerson(g, new Rectangle(p.x*3,p.y*3,5,5));
+    		drawPerson(g,p.x*3,p.y*3,5,5);
     	}
     }
     
 
-	public void drawPerson(Graphics g, Rectangle bb) {
-	    g.fillOval(bb.x, bb.y, bb.width, bb.height);
+	public void drawPerson(Graphics g,int x,int y,int width,int height) {
+	    g.fillOval(x, y, width, height);
 	    g.setColor(new Color(0,0,0));
-	    g.drawOval(bb.x, bb.y, bb.width, bb.height);
+	    g.drawOval(x, y, width, height);
 	}
 	
-	public void drawLocation(Graphics g, Rectangle bb, int[] borders) {
-		g.fillRect(bb.x, bb.y, bb.width, bb.height);
+	public void drawLocation(Graphics g,int x,int y,int width,int height, int[] borders) {
+		g.fillRect(x, y, width, height);
 		g.setColor(new Color(0,0,0));
-		if(borders[0]==1) g.fillRect(bb.x, bb.y, 2, bb.height);
-		if(borders[1]==1) g.fillRect(bb.x, bb.y, bb.width, 2);
-		if(borders[2]==1) g.fillRect(bb.x+bb.width-2, bb.y, 2, bb.height);
-		if(borders[3]==1) g.fillRect(bb.x, bb.y+bb.width-2, bb.width, 2);
+		if(borders[0]==1) g.fillRect(x, y, 2, height);
+		if(borders[1]==1) g.fillRect(x, y, width, 2);
+		if(borders[2]==1) g.fillRect(x+width-2, y, 2,height);
+		if(borders[3]==1) g.fillRect(x, y+width-2,width, 2);
 	}
 
 	

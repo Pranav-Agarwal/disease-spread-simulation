@@ -4,6 +4,8 @@ import java.util.TimerTask;
 
 public class Simulator extends TimerTask{
 
+	static int speed = 2;
+	static boolean playing = false;
 	public Map map;
 	public GUICanvas canvas;
 	public int simTicks;
@@ -17,13 +19,18 @@ public class Simulator extends TimerTask{
 	@Override
 	public void run() {
 		//map.refreshAndPrintMap();
-		simTicks++;
-		map.update();
-		if(simTicks%10==0) map.spreadDisease();	
-		//if(simTicks>500) map.lockdownBuildings(Map.offices);
-		//if(simTicks>700) map.lockdownBuildings(Map.public_places);
-		//if(simTicks>500) map.enforceQuarantine();
 		canvas.repaint();
+		if(playing) { 
+			simTicks++;
+			if(simTicks%speed==0) {
+				map.update();
+				if(simTicks%10==0) map.spreadDisease();	
+				//if(simTicks>500) map.lockdownBuildings(Map.offices);
+				//if(simTicks>700) map.lockdownBuildings(Map.public_places);
+				//if(simTicks>500) map.enforceQuarantine();
+				
+			}
+		}
 	}
 
 }

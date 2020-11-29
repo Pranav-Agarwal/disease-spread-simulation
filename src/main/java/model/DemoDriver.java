@@ -2,6 +2,7 @@ package model;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.Timer;
 
 import javax.swing.JFrame;
@@ -11,20 +12,27 @@ import model.Location.Type;
 public class DemoDriver {
 	
 	public static void main(String args[]) {
-		Map map = new Map();
-		map.seedBuilding(Type.PUBLIC,simulationConfig.publicCount,simulationConfig.publicMinSize,simulationConfig.publicMaxSize);
-		map.seedBuilding(Type.WORK,simulationConfig.officeCount,simulationConfig.officeSize,simulationConfig.officeSizeVariation);
-		map.seedBuilding(Type.HOUSE,simulationConfig.houseCount,simulationConfig.houseSize,simulationConfig.houseSizeVariation);
-		map.addPeople(simulationConfig.peopleCount);
-		map.seedVirus(simulationConfig.virusSeedCount);
+		try {
+			new simulationConfig("config.properties");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		new Map();
+		Map.instance.seedBuilding(Type.PUBLIC,simulationConfig.publicCount,simulationConfig.publicMinSize,simulationConfig.publicMaxSize);
+		Map.instance.seedBuilding(Type.WORK,simulationConfig.officeCount,simulationConfig.officeSize,simulationConfig.officeSizeVariation);
+		Map.instance.seedBuilding(Type.HOUSE,simulationConfig.houseCount,simulationConfig.houseSize,simulationConfig.houseSizeVariation);
+		Map.instance.addPeople(simulationConfig.peopleCount);
+		Map.instance.seedVirus(simulationConfig.virusSeedCount);
 		//map.publicEventBuilding = map.public_places.get(0);
         JFrame frame = new JFrame("Disease");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GUICanvas canvas = new GUICanvas();
         frame.add(canvas);
         frame.pack();
         frame.setVisible(true);
-		Simulator sim = new Simulator(map,canvas);
-		new Timer().schedule(sim, 100, 10);
+        new GUIConfig();
+		Simulator sim = new Simulator(Map.instance,canvas);
+		new Timer().schedule(sim, 100, 15);
 		
 	}
 	

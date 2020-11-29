@@ -16,6 +16,13 @@ public class simulationConfig {
 	public static double chanceToGetSymptoms=0.4;
 	public static double chanceToKill=0.01;
 	public static double chanceToVisitPublic=0.1;
+	public static boolean quarantineOnTest = false;
+	public static boolean contactTracing = false;
+	public static boolean maskEnforcement = false;
+	
+	//Building config
+	public static int lockdownPeriod = 1500;
+	public static boolean lockdownOnTest = false;
 	
 	//Map config
 	public static int size=300;
@@ -37,10 +44,12 @@ public class simulationConfig {
 	public static String officeColor="#ffa600";
 	public static String publicColor="#00ff00";
 	public static String roadColor="#c8c8c8";
-	public static String quarantinedColor="#f003fc";
+	public static String quarantinedColor="#03adfc";
 	public static String infectedColor="#ff0000";
-	public static String immuneColor="#03adfc";
+	public static String immuneColor="#14e31f";
 	public static String personColor="#ffffff";
+	public static String publicEventBuildingColor="#a83281";
+	public static String lockdownColor="#fc5a03";
 	
 	
 	
@@ -53,6 +62,34 @@ public class simulationConfig {
 		chanceToGetSymptoms = Double.parseDouble(prop.getProperty("chanceToGetSymptoms"));
 		chanceToKill = Double.parseDouble(prop.getProperty("chanceToKill"));
 		chanceToVisitPublic = Double.parseDouble(prop.getProperty("chanceToVisitPublic"));
+		quarantineOnTest = Boolean.parseBoolean(prop.getProperty("quarantineOnTest"));
+		contactTracing = Boolean.parseBoolean(prop.getProperty("contactTracing"));
+		maskEnforcement = Boolean.parseBoolean(prop.getProperty("maskEnforcement"));
+		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
+		lockdownOnTest = Boolean.parseBoolean(prop.getProperty("lockdownOnTest"));
+		size=Integer.parseInt(prop.getProperty("size"));
+		peopleCount=Integer.parseInt(prop.getProperty("peopleCount"));
+		virusSeedCount=Integer.parseInt(prop.getProperty("virusSeedCount"));
+		closenessFactor=Integer.parseInt(prop.getProperty("closenessFactor"));
+		houseCount=Integer.parseInt(prop.getProperty("houseCount"));
+		officeCount=Integer.parseInt(prop.getProperty("officeCount"));
+		publicCount=Integer.parseInt(prop.getProperty("publicCount"));
+		houseSize=Integer.parseInt(prop.getProperty("houseSize"));
+		houseSizeVariation=Integer.parseInt(prop.getProperty("houseSizeVariation"));
+		officeSize=Integer.parseInt(prop.getProperty("officeSize"));
+		officeSizeVariation=Integer.parseInt(prop.getProperty("officeSizeVariation"));
+		publicMinSize=Double.parseDouble(prop.getProperty("publicMinSize"));
+		publicMaxSize=Double.parseDouble(prop.getProperty("publicMaxSize"));
+		houseColor=prop.getProperty("houseColor");
+		officeColor=prop.getProperty("officeColor");
+		publicColor=prop.getProperty("publicColor");
+		roadColor=prop.getProperty("roadColor");
+		quarantinedColor=prop.getProperty("quarantinedColor");
+		infectedColor=prop.getProperty("infectedColor");
+		immuneColor=prop.getProperty("immuneColor");
+		personColor=prop.getProperty("personColor");	
+		publicEventBuildingColor=prop.getProperty("publicEventBuildingColor");
+		lockdownColor=prop.getProperty("lockdownColor");
 		
 	}
 	

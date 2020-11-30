@@ -16,6 +16,8 @@ public class Person {
 	Boolean isSymptomatic=false;
 	int ticksSinceInfected=0;
 	int ticksSinceQuarantined=0;
+	int ticksSinceTested = simulationConfig.testCooldown;
+	int peopleInfected = 0;
 	Location currentLocation;
 	int x;
 	int y;
@@ -50,13 +52,18 @@ public class Person {
 	public void update() {
 		//System.out.println(x+" "+y+" "+home.x+" "+home.y+" "+workplace.x+" "+workplace.y+" "+tasks.size()+" "+currentLocation.x+" "+currentLocation.y);
 		//if(isInfected && state==State.MOVING) infectInTransit();
+		ticksSinceTested++;
 		if(isInfected) {
 			ticksSinceInfected++;
 			if (ticksSinceInfected>infectionPeriod) {
+				Map.totalActiveInfected--;
 				if(Math.random()<chanceToKill) killPerson();
-				isInfected=false;
-				isImmune=true;
-				isSymptomatic = false;
+				else {
+					isInfected=false;
+					isImmune=true;
+					isSymptomatic = false;				
+					Map.totalImmune++;
+				}
 			}
 			else if(ticksSinceInfected==incubationPeriod) {
 				if(Math.random()<chanceToGetSymptoms) {
@@ -70,8 +77,9 @@ public class Person {
 			if(tasks.isEmpty() && currentLocation!=home) {
 				tasks.add(new MoveTask(this,home));
 			}
-			if (ticksSinceQuarantined>quarantinePeriod) {
+			if (ticksSinceQuarantined>quarantinePeriod && isQuarantined) {
 				isQuarantined=false;
+				Map.totalQuarantined--;
 			}
 		}
 		else if(tasks.isEmpty()) {
@@ -98,7 +106,12 @@ public class Person {
 	
 	public void tryToInfect(Person spreader) {
 		if (isImmune) return;
-		if(Math.random()<0.004) isInfected=true; 
+		if(Math.random()<0.004) {
+			isInfected=true; 
+			Map.totalInfected++;
+			Map.totalActiveInfected++;
+			spreader.peopleInfected++;
+		}
 	}
 	
 	private void infectInTransit() {
@@ -110,28 +123,33 @@ public class Person {
 	private Location pickPublicLocation() {
 		Random random = new Random();
 		Location randomPublicLocation;
-		if(Map.publicEventBuilding==null || random.nextDouble()<0.001) {
+		if(simulationConfig.publicEventBuilding==null || random.nextDouble()<0.001) {
 			Building randomPublicBuilding = Map.public_places.get(random.nextInt(Map.public_places.size()));
 			randomPublicLocation = randomPublicBuilding.locations.get(random.nextInt(randomPublicBuilding.locations.size()));
 		}
 		else {
-			randomPublicLocation = Map.publicEventBuilding.locations.get(random.nextInt(Map.publicEventBuilding.locations.size()));
+			randomPublicLocation = simulationConfig.publicEventBuilding.locations.get(random.nextInt(simulationConfig.publicEventBuilding.locations.size()));
 		}
 		return randomPublicLocation;
 	}
 	
 	private void takeTest() {
-		
+		ticksSinceTested = 0;
+		Map.totalTests++;
 		if(isInfected && Math.random()<0.8) {
 			isTestedInfected = true;
+			Map.totalPositiveTests++;
 			if(simulationConfig.lockdownOnTest) workplace.building.isLockdown=true;
-			if(simulationConfig.quarantineOnTest) isQuarantined = true;
+			if(simulationConfig.quarantineOnTest) {
+				isQuarantined= true;
+				Map.totalQuarantined++;
+			}
 			if(simulationConfig.contactTracing) {
 				for(Person p : workplace.building.persons) {
-					if(p.isInfected && !p.isTestedInfected) p.takeTest();
+					if(p.ticksSinceTested>simulationConfig.testCooldown) p.takeTest();
 				}
 				for(Person p : home.building.persons) {
-					if(p.isInfected && !p.isTestedInfected) p.takeTest();
+					if(p.ticksSinceTested>simulationConfig.testCooldown) p.takeTest();
 				}
 			}
 		}
@@ -140,6 +158,9 @@ public class Person {
 	private void killPerson() {
 		currentLocation.persons.remove(this);
 		if (currentLocation.building!=null) currentLocation.building.persons.remove(this);
+		((OfficeBuilding)workplace.building).workers.remove(this);
+		((HouseBuilding)home.building).residents.remove(this);
+		Map.totalDead++;
 		isDead=true;
 	}
 }

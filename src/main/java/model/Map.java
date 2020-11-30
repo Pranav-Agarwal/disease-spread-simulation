@@ -1,5 +1,10 @@
 package model;
 
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,18 +16,28 @@ import java.util.Set;
 import model.Location.Type;
 import model.Person.State;
 
-public class Map {
+public class Map{
 	
+	//contains
 	static Location[][] grid;
 	static Set<Person> persons;
 	static List<Building> houses = new ArrayList<>();
 	static List<Building> offices = new ArrayList<>();
 	static List<Building> public_places = new ArrayList<>();
-	static Building publicEventBuilding;
-	static Boolean contactTracing = false;
 	static public Map instance;
+	
 	//properties
 	static int size;
+	
+	//simulation state
+	static int totalInfected = 0;
+	static int totalActiveInfected = 0;
+	static int totalDead = 0;
+	static int totalImmune = 0;
+	static int totalQuarantined = 0;
+	static double rNought = 0;
+	static int totalTests = 0;
+	static int totalPositiveTests = 0;
 	
 	
 	public Map() {
@@ -71,6 +86,8 @@ public class Map {
 			if(counter>=persons.size() || counter==count) break;
 			p.isInfected = true;		
 		}
+		Map.totalActiveInfected = count;
+		Map.totalInfected = count;
 	}
 	
 	public void seedBuilding(Type type, int count, double minSize, double maxSize) {
@@ -162,16 +179,16 @@ public class Map {
 	}
 	
 	public void createPublicEvent() {
-		publicEventBuilding = public_places.get(new Random().nextInt(public_places.size()));
+		simulationConfig.publicEventBuilding = public_places.get(new Random().nextInt(public_places.size()));
 	}
 	
 	public void stopPublicEvent() {
-		publicEventBuilding = null;
+		simulationConfig.publicEventBuilding = null;
 	}
 	
 	public void update() {
 		for(Person p:persons) {
-			p.update();
+			if(!p.isDead) p.update();
 		}
 		for(Building b : offices) {
 			b.update();
@@ -219,10 +236,19 @@ public class Map {
 	
 	public void enforceQuarantine() {
 		for(Person p:persons) {
-			if (p.isTestedInfected && !p.isImmune) {
+			if (p.isTestedInfected && !p.isImmune && !p.isQuarantined) {
+				Map.totalQuarantined++;
 				p.isQuarantined=true;
 			}
 		}
+	}
+	
+	public void updateRNought() {
+		double t = 0.0;
+		for (Person p : persons) {
+			t+=p.peopleInfected;
+		}
+		rNought = t/persons.size();
 	}
 	
 }

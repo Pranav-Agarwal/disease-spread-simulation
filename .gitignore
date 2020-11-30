@@ -5,6 +5,9 @@ target
 # Log file
 *.log
 
+#output file
+*.csv
+
 # BlueJ files
 *.ctxt
 

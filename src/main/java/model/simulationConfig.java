@@ -19,12 +19,15 @@ public class simulationConfig {
 	public static boolean quarantineOnTest = false;
 	public static boolean contactTracing = false;
 	public static boolean maskEnforcement = false;
+	public static Building publicEventBuilding=null;
+	public static int testCooldown = 500;
 	
 	//Building config
 	public static int lockdownPeriod = 1500;
 	public static boolean lockdownOnTest = false;
 	
 	//Map config
+	public static boolean showGUI = true;
 	public static int size=300;
 	public static int peopleCount=1000;
 	public static int virusSeedCount=5;
@@ -67,6 +70,7 @@ public class simulationConfig {
 		maskEnforcement = Boolean.parseBoolean(prop.getProperty("maskEnforcement"));
 		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
 		lockdownOnTest = Boolean.parseBoolean(prop.getProperty("lockdownOnTest"));
+		showGUI = Boolean.parseBoolean(prop.getProperty("showGUI"));
 		size=Integer.parseInt(prop.getProperty("size"));
 		peopleCount=Integer.parseInt(prop.getProperty("peopleCount"));
 		virusSeedCount=Integer.parseInt(prop.getProperty("virusSeedCount"));

@@ -39,7 +39,7 @@ public class GUICanvas extends JPanel{
     			else if(cell.type==Type.HOUSE) g.setColor(Color.decode(simulationConfig.houseColor));
     			else if(cell.type==Type.WORK) g.setColor(Color.decode(simulationConfig.officeColor));
     			else if(cell.type==Type.PUBLIC) {
-    				if(Map.publicEventBuilding==cell.building) g.setColor(Color.decode(simulationConfig.publicEventBuildingColor));
+    				if(simulationConfig.publicEventBuilding==cell.building) g.setColor(Color.decode(simulationConfig.publicEventBuildingColor));
     				else g.setColor(Color.decode(simulationConfig.publicColor));
     			}
     			else g.setColor(Color.decode(simulationConfig.roadColor));

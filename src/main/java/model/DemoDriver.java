@@ -29,9 +29,9 @@ public class DemoDriver {
         GUICanvas canvas = new GUICanvas();
         frame.add(canvas);
         frame.pack();
-        frame.setVisible(true);
+        if (simulationConfig.showGUI) frame.setVisible(true);
         new GUIConfig();
-		Simulator sim = new Simulator(Map.instance,canvas);
+		Simulator sim = new Simulator(canvas);
 		new Timer().schedule(sim, 100, 15);
 		
 	}

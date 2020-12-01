@@ -10,4 +10,12 @@ public class Utils {
 		return (int)Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
 	}
 	
+	public static int getDistance(Person p1,Person p2) {
+		int x1 = p1.x;
+		int y1 = p1.y;
+		int x2 = p2.x;
+		int y2 = p2.y;
+		return (int)Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(y1-y2, 2));
+	}
+	
 }

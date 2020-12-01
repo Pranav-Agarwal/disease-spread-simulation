@@ -16,9 +16,8 @@ import java.util.Set;
 import model.Location.Type;
 import model.Person.State;
 
-public class Map{
+public class Map {
 	
-	//contains
 	static Location[][] grid;
 	static Set<Person> persons;
 	static List<Building> houses = new ArrayList<>();

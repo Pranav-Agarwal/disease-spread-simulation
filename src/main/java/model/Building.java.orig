@@ -17,17 +17,17 @@ public abstract class Building {
 		this.isLockdown = false;
 	}
 	
+<<<<<<< HEAD
 	public int getCurrentSize()
 	{
 		return persons.size();
-	}
-	
+=======
 	public void update() {
 		if(isLockdown) timeSinceLockdown++;
 		if(timeSinceLockdown>simulationConfig.lockdownPeriod) {
-		timeSinceLockdown=0;
-		isLockdown=false;}
+			timeSinceLockdown=0;
+			isLockdown=false;
+		}
+>>>>>>> 4e0c38c23f1c2d492da2145971c90ecc1a0a8541
 	}
-	
-	
 }

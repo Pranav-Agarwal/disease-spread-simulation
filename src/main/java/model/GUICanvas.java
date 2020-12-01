@@ -48,7 +48,7 @@ public class GUICanvas extends JPanel{
     	}
     	
     	for(Person p : Map.persons) {
-    		if(p.isDead) g.setColor(Color.decode(simulationConfig.deadColor));
+    		if(p.isDead) continue;
     		else if(p.isQuarantined) g.setColor(Color.decode(simulationConfig.quarantinedColor));
     		else if(p.isInfected) g.setColor(Color.decode(simulationConfig.infectedColor));
     		else if(p.isImmune) g.setColor(Color.decode(simulationConfig.immuneColor));

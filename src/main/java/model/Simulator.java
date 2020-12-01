@@ -39,7 +39,7 @@ public class Simulator extends TimerTask{
 	@Override
 	public void run() {
 		//map.refreshAndPrintMap();
-		if(Map.totalActiveInfected==0 || Map.totalInfected>=cutoff) stopSim();
+		//if(Map.totalActiveInfected==0 || Map.totalInfected>=cutoff) stopSim();
 		if(simulationConfig.showGUI) canvas.repaint();
 		if(playing) { 
 			actualTicks++;

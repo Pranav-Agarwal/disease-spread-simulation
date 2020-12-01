@@ -18,7 +18,8 @@ public class simulationConfig {
 	public static boolean maskEnforcement = false;
 	public static Building publicEventBuilding=null;
 	public static int testCooldown = 500;
-	
+	public static double lethality = 0.1;
+	public static String virusType = "Covid 19";
 	//Building config
 	public static int lockdownPeriod = 1500;
 	public static boolean lockdownOnTest = false;
@@ -40,11 +41,11 @@ public class simulationConfig {
 	public static double publicMaxSize=0.95;
 	public static double socialDistancing_radius=2.0;		// can be changed for experiments
 	public static Boolean socialDistancing = false;			// initailize from checkbox/Jtoggle
-	public static Boolean maskImposed = false;				// initailize from checkbox/Jtoggle
-	public static Boolean imposeLockdown=false;				// drop down selection
 	public static Boolean limitedReOpening=false;			// drop down selection
-	public static Boolean liftLockdown=true;				// drop down selection
 	public static double reopenCapacity = 0.5;				// can be changed for experiments (user input)
+	public static int infectionPeriod = 1500;
+	public static int quarantinePeriod = 1500;
+	public static int incubationPeriod = 500;
 	
 	
 	//GUI config
@@ -67,10 +68,38 @@ public class simulationConfig {
 		infectionPeriod = Integer.parseInt(prop.getProperty("infectionPeriod"));
 		quarantinePeriod = Integer.parseInt(prop.getProperty("quarantinePeriod"));
 		incubationPeriod = Integer.parseInt(prop.getProperty("incubationPeriod"));
-		lethality= Double.parseDouble(prop.getProperty("lethality"));
 		chanceToGetSymptoms = Double.parseDouble(prop.getProperty("chanceToGetSymptoms"));
-	//	chanceToKill = Double.parseDouble(prop.getProperty("chanceToKill"));
+		chanceToKill = Double.parseDouble(prop.getProperty("chanceToKill"));
 		chanceToVisitPublic = Double.parseDouble(prop.getProperty("chanceToVisitPublic"));
+		quarantineOnTest = Boolean.parseBoolean(prop.getProperty("quarantineOnTest"));
+		contactTracing = Boolean.parseBoolean(prop.getProperty("contactTracing"));
+		maskEnforcement = Boolean.parseBoolean(prop.getProperty("maskEnforcement"));
+		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
+		lockdownOnTest = Boolean.parseBoolean(prop.getProperty("lockdownOnTest"));
+		showGUI = Boolean.parseBoolean(prop.getProperty("showGUI"));
+		size=Integer.parseInt(prop.getProperty("size"));
+		peopleCount=Integer.parseInt(prop.getProperty("peopleCount"));
+		virusSeedCount=Integer.parseInt(prop.getProperty("virusSeedCount"));
+		closenessFactor=Integer.parseInt(prop.getProperty("closenessFactor"));
+		houseCount=Integer.parseInt(prop.getProperty("houseCount"));
+		officeCount=Integer.parseInt(prop.getProperty("officeCount"));
+		publicCount=Integer.parseInt(prop.getProperty("publicCount"));
+		houseSize=Integer.parseInt(prop.getProperty("houseSize"));
+		houseSizeVariation=Integer.parseInt(prop.getProperty("houseSizeVariation"));
+		officeSize=Integer.parseInt(prop.getProperty("officeSize"));
+		officeSizeVariation=Integer.parseInt(prop.getProperty("officeSizeVariation"));
+		publicMinSize=Double.parseDouble(prop.getProperty("publicMinSize"));
+		publicMaxSize=Double.parseDouble(prop.getProperty("publicMaxSize"));
+		houseColor=prop.getProperty("houseColor");
+		officeColor=prop.getProperty("officeColor");
+		publicColor=prop.getProperty("publicColor");
+		roadColor=prop.getProperty("roadColor");
+		quarantinedColor=prop.getProperty("quarantinedColor");
+		infectedColor=prop.getProperty("infectedColor");
+		immuneColor=prop.getProperty("immuneColor");
+		personColor=prop.getProperty("personColor");	
+		publicEventBuildingColor=prop.getProperty("publicEventBuildingColor");
+		lockdownColor=prop.getProperty("lockdownColor");
 		
 		
 	}

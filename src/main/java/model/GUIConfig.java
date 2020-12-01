@@ -169,6 +169,14 @@ public class GUIConfig implements ActionListener{
 		JToggleButton maskToggle = new JToggleButton("Enforce masks");
 		maskToggle.setBounds(20, 313, 264, 23);
 		frame.getContentPane().add(maskToggle);
+		maskToggle.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent eve) {  
+		        if (maskToggle.isSelected())
+		        	simulationConfig.maskEnforcement = true;
+		        else  
+		        	simulationConfig.maskEnforcement = false;  
+		    }
+		});
 		
 		JToggleButton testOfficeLockdownToggle = new JToggleButton("Lockdown office on +ve test");
 		testOfficeLockdownToggle.setBounds(20, 347, 264, 23);

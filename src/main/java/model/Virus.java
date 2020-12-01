@@ -5,7 +5,7 @@ public class Virus {
 	
 	//config parameters
 	
-	String VirusType;
+	String virusType;
 	int infectionPeriod;
 	int quarantinePeriod;
 	int incubationPeriod;
@@ -19,7 +19,7 @@ public class Virus {
 	
 	public Virus()
 	{
-		this.VirusType= simulationConfig.VirusType;
+		this.virusType= simulationConfig.virusType;
 		this.infectionPeriod=simulationConfig.infectionPeriod;
 		this.quarantinePeriod=simulationConfig.quarantinePeriod;
 		this.incubationPeriod=simulationConfig.incubationPeriod;

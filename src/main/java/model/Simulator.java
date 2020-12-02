@@ -16,24 +16,14 @@ public class Simulator extends TimerTask{
 	static boolean playing = false;
 	public GUICanvas canvas;
 	public int actualTicks;
-	private int simTicks;
-    private FileWriter writer;
+	public static int simTicks;
     private int cutoff = 0;
 	
 	public Simulator(GUICanvas canvas) {
 		this.canvas = canvas;
 		this.actualTicks=0;
 		this.simTicks = 0;
-		this.cutoff = (int) (Map.persons.size()*0.8);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH-mm-ss");
-		String timestamp = LocalDateTime.now().format(formatter);
-        try {
-			writer = new FileWriter("output/data_"+timestamp+".csv",true);
-			writer.write("tick,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-        
+		this.cutoff = (int) (Map.persons.size()*0.8);    
 	}
 	
 	@Override
@@ -46,7 +36,7 @@ public class Simulator extends TimerTask{
 			if(actualTicks%speed==0) {
 				simTicks++;
 				Map.instance.update();
-				saveMapState();
+				OutputWriter.writeSimData();
 				if(actualTicks%10==0) {
 					Map.instance.spreadDisease();
 				}
@@ -58,21 +48,10 @@ public class Simulator extends TimerTask{
 		}
 	}
 	
-	private void saveMapState() {
-      try {
-    	  writer.write(simTicks+","+Map.totalInfected+","+Map.totalActiveInfected+","+Map.totalDead+","+Map.totalImmune+","+Map.totalQuarantined+","+Map.totalTests+","+Map.totalPositiveTests+"\n");
-       } catch (IOException i) {
-          i.printStackTrace();
-       }
-	}
 	
-	private void stopSim() {
+	public static void stopSim() {
 		playing = false;
-		try {
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		OutputWriter.closeAndSave();
 		System.exit(0);
 	}
 

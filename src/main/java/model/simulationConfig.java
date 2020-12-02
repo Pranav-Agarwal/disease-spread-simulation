@@ -40,10 +40,10 @@ public class simulationConfig {
 	public static int officeSizeVariation=3;
 	public static double publicMinSize=0.9;
 	public static double publicMaxSize=0.95;
-	public static double socialDistancing_radius=2.0;		// can be changed for experiments
-	public static Boolean socialDistancing = false;			// initailize from checkbox/Jtoggle
-	public static Boolean limitedReOpening=false;			// drop down selection
-	public static double reopenCapacity = 0.5;				// can be changed for experiments (user input)
+	public static double socialDistancing_radius=2.0;
+	public static Boolean socialDistancing = false;		
+	public static Boolean limitedReOpening=false;		
+	public static double reopenCapacity = 0.5;			
 	public static int infectionPeriod = 1500;
 	public static int quarantinePeriod = 1500;
 	public static int incubationPeriod = 500;

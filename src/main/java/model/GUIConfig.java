@@ -110,7 +110,7 @@ public class GUIConfig implements ActionListener{
 		speedPanel.add(exitToggleButton);
 		exitToggleButton.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
-		    	System.exit(0);
+		    	Simulator.stopSim();
 		    }
 		});
 		

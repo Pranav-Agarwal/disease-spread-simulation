@@ -14,6 +14,7 @@ public class Person {
 	Boolean isDead=false;
 	Boolean isQuarantined=false;
 	Boolean isSymptomatic=false;
+	String infection_location="seed";
 	
 	int age=0;
 	double immunityStrength=0.0;
@@ -33,7 +34,7 @@ public class Person {
 
 	double chanceToGetSymptoms;
 	double chanceToKill;
-	double chanceToVisitPublic = 0.1;
+	double chanceToVisitPublic;
 	
 	
 	public Person(Location home, Location workplace) {
@@ -72,6 +73,7 @@ public class Person {
 					isSymptomatic = true;
 					if(!isTestedInfected) takeTest();
 				}
+				OutputWriter.writeInfectionData(age, immunityStrength, infection_location,isSymptomatic,isTestedInfected);
 			}
 		}
 		if(isQuarantined) {
@@ -126,6 +128,7 @@ public class Person {
 			Map.totalInfected++;
 			Map.totalActiveInfected++;
 			spreader.peopleInfected++;
+			if(infection_location=="seed") infection_location=currentLocation.building.getClass().getSimpleName();
 		}
 		
 	}
@@ -183,6 +186,7 @@ public class Person {
 			isQuarantined=false;
 			Map.totalQuarantined--;
 		}
+		OutputWriter.writeDeathData(age, chanceToKill, isTestedInfected);
 	}
 
 	private int getAge() {

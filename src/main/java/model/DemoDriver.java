@@ -31,6 +31,7 @@ public class DemoDriver {
         frame.pack();
         if (simulationConfig.showGUI) frame.setVisible(true);
         new GUIConfig();
+        new OutputWriter();
 		Simulator sim = new Simulator(canvas);
 		new Timer().schedule(sim, 100, 15);
 		

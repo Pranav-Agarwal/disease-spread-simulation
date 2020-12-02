@@ -95,11 +95,10 @@ public class Person {
 				}			
 				
 			}
-			else if(currentLocation == home && (!workplace.building.isLockdown || (simulationConfig.limitedReOpening && workplace.building.getCurrentSize()<0.5*simulationConfig.officeSize )))
-			{  
+			else if(currentLocation == home && !workplace.building.isLockdown && (!simulationConfig.limitedReOpening || ((double)workplace.building.getCurrentOccupancy())/((OfficeBuilding)workplace.building).workers.size()<simulationConfig.limitedOccupancyPercentage)){  
 				tasks.add(new MoveTask(this,workplace));
-				tasks.add(new WorkTask(this,200+random.nextInt(100)));}
-			
+				tasks.add(new WorkTask(this,200+random.nextInt(100)));
+			}	
 			else{
 				tasks.add(new MoveTask(this,home));
 				tasks.add(new WorkTask(this,200+random.nextInt(200)));

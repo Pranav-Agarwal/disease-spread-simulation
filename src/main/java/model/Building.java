@@ -17,7 +17,7 @@ public abstract class Building {
 		this.isLockdown = false;
 	}
 	
-	public int getCurrentSize()
+	public int getCurrentOccupancy()
 	{
 		return persons.size();
 	}

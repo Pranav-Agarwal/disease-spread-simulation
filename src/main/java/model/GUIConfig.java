@@ -58,12 +58,12 @@ public class GUIConfig implements ActionListener{
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setTitle("Configuration");
-		frame.setSize(new Dimension(300, 421));
+		frame.setSize(new Dimension(300, 528));
 		frame.getContentPane().setLayout(null);
 		
 		JPanel speedPanel = new JPanel();
 		speedPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		speedPanel.setBounds(10,11,274,121);
+		speedPanel.setBounds(10,11,274,163);
 		frame.getContentPane().add(speedPanel);
 		speedPanel.setLayout(null);
 		
@@ -89,7 +89,7 @@ public class GUIConfig implements ActionListener{
 		
 		JToggleButton playButton = new JToggleButton("Play");
 		playButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		playButton.setBounds(29, 87, 200, 23);
+		playButton.setBounds(29, 87, 222, 23);
 		speedPanel.add(playButton);
 		playButton.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -104,8 +104,18 @@ public class GUIConfig implements ActionListener{
 		    }
 		});
 		
+		JToggleButton exitToggleButton = new JToggleButton("Save data and Exit");
+		exitToggleButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		exitToggleButton.setBounds(29, 121, 222, 23);
+		speedPanel.add(exitToggleButton);
+		exitToggleButton.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent eve) {  
+		    	System.exit(0);
+		    }
+		});
+		
 		JToggleButton officeLockdownToggle = new JToggleButton("Lockdown Offices");
-		officeLockdownToggle.setBounds(20, 143, 264, 23);
+		officeLockdownToggle.setBounds(20, 185, 264, 23);
 		frame.getContentPane().add(officeLockdownToggle);
 		officeLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -117,7 +127,7 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton publicLockdownToggle = new JToggleButton("Lockdown Public Places");
-		publicLockdownToggle.setBounds(20, 177, 264, 23);
+		publicLockdownToggle.setBounds(20, 219, 264, 23);
 		frame.getContentPane().add(publicLockdownToggle);
 		publicLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -129,7 +139,7 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton publicEventToggle = new JToggleButton("Active Public Event");
-		publicEventToggle.setBounds(20, 211, 264, 23);
+		publicEventToggle.setBounds(20, 253, 264, 23);
 		frame.getContentPane().add(publicEventToggle);
 		publicEventToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -141,7 +151,7 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton quarantineToggle = new JToggleButton("Quarantine on +ve test");
-		quarantineToggle.setBounds(20, 245, 264, 23);
+		quarantineToggle.setBounds(20, 287, 264, 23);
 		frame.getContentPane().add(quarantineToggle);
 		quarantineToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -155,7 +165,7 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton contactTraceToggle = new JToggleButton("Contact trace on +ve test");
-		contactTraceToggle.setBounds(20, 279, 264, 23);
+		contactTraceToggle.setBounds(20, 321, 264, 23);
 		frame.getContentPane().add(contactTraceToggle);
 		contactTraceToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -167,7 +177,7 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton maskToggle = new JToggleButton("Enforce masks");
-		maskToggle.setBounds(20, 313, 264, 23);
+		maskToggle.setBounds(20, 355, 264, 23);
 		frame.getContentPane().add(maskToggle);
 		maskToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -179,7 +189,7 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton testOfficeLockdownToggle = new JToggleButton("Lockdown office on +ve test");
-		testOfficeLockdownToggle.setBounds(20, 347, 264, 23);
+		testOfficeLockdownToggle.setBounds(20, 389, 264, 23);
 		frame.getContentPane().add(testOfficeLockdownToggle);
 		testOfficeLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -187,6 +197,30 @@ public class GUIConfig implements ActionListener{
 		        	simulationConfig.lockdownOnTest = true;
 		        else  
 		        	simulationConfig.lockdownOnTest = false;  
+		    }
+		});
+		
+		JToggleButton limitOfficeCapacityToggle = new JToggleButton("Limit office building capacity");
+		limitOfficeCapacityToggle.setBounds(20, 423, 264, 23);
+		frame.getContentPane().add(limitOfficeCapacityToggle);
+		limitOfficeCapacityToggle.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent eve) {  
+		        if (limitOfficeCapacityToggle.isSelected())
+		        	simulationConfig.limitedReOpening = true;
+		        else  
+		        	simulationConfig.limitedReOpening = false;  
+		    }
+		});
+		
+		JToggleButton socialDistancingToggle = new JToggleButton("Enforce Social Distancing");
+		socialDistancingToggle.setBounds(20, 457, 264, 23);
+		frame.getContentPane().add(socialDistancingToggle);
+		socialDistancingToggle.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent eve) {  
+		        if (socialDistancingToggle.isSelected())
+		        	simulationConfig.socialDistancing = true;
+		        else  
+		        	simulationConfig.socialDistancing = false;  
 		    }
 		});
     }

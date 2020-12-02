@@ -23,6 +23,7 @@ public class simulationConfig {
 	//Building config
 	public static int lockdownPeriod = 1500;
 	public static boolean lockdownOnTest = false;
+	public static double limitedOccupancyPercentage=0.5;
 	
 	//Map config
 	public static boolean showGUI = true;
@@ -35,7 +36,7 @@ public class simulationConfig {
 	public static int publicCount=10;
 	public static int houseSize=5;
 	public static int houseSizeVariation=1;
-	public static int officeSize=13;
+	public static int officeSize = 13;
 	public static int officeSizeVariation=3;
 	public static double publicMinSize=0.9;
 	public static double publicMaxSize=0.95;
@@ -76,6 +77,7 @@ public class simulationConfig {
 		maskEnforcement = Boolean.parseBoolean(prop.getProperty("maskEnforcement"));
 		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
 		lockdownOnTest = Boolean.parseBoolean(prop.getProperty("lockdownOnTest"));
+		limitedOccupancyPercentage=Double.parseDouble(prop.getProperty("limitedOccupancyPercentage"));
 		showGUI = Boolean.parseBoolean(prop.getProperty("showGUI"));
 		size=Integer.parseInt(prop.getProperty("size"));
 		peopleCount=Integer.parseInt(prop.getProperty("peopleCount"));
@@ -86,7 +88,7 @@ public class simulationConfig {
 		publicCount=Integer.parseInt(prop.getProperty("publicCount"));
 		houseSize=Integer.parseInt(prop.getProperty("houseSize"));
 		houseSizeVariation=Integer.parseInt(prop.getProperty("houseSizeVariation"));
-		officeSize=Integer.parseInt(prop.getProperty("officeSize"));
+		officeSize = Integer.parseInt(prop.getProperty("officeSize"));
 		officeSizeVariation=Integer.parseInt(prop.getProperty("officeSizeVariation"));
 		publicMinSize=Double.parseDouble(prop.getProperty("publicMinSize"));
 		publicMaxSize=Double.parseDouble(prop.getProperty("publicMaxSize"));

@@ -67,6 +67,7 @@ public class simulationConfig {
 	
 	public simulationConfig(String path) throws IOException {
 		prop = readPropertiesFile(path);
+		virusType = prop.getProperty("virusType");
 		if (virusType=="INF")
 			{infectionPeriod = Integer.parseInt(prop.getProperty("INFinfectionPeriod"));
 			quarantinePeriod = Integer.parseInt(prop.getProperty("INFquarantinePeriod"));

@@ -9,6 +9,7 @@ public class Virus {
 	int infectionPeriod;
 	int quarantinePeriod;
 	int incubationPeriod;
+	double chanceToGetSymptoms;
 	double lethality;
 	
 	//to be calculated
@@ -17,15 +18,15 @@ public class Virus {
 	
 	
 	
-	public Virus()
+	public Virus(String virusType)
 	{
-		this.virusType= simulationConfig.virusType;
-		this.infectionPeriod=simulationConfig.infectionPeriod;
-		this.quarantinePeriod=simulationConfig.quarantinePeriod;
-		this.incubationPeriod=simulationConfig.incubationPeriod;
-		this.lethality=simulationConfig.lethality;
-	}
-	
+			this.virusType=simulationConfig.virusType;
+		    this.infectionPeriod=simulationConfig.infectionPeriod;
+			this.quarantinePeriod=simulationConfig.quarantinePeriod;
+			this.incubationPeriod=simulationConfig.incubationPeriod;
+			this.chanceToGetSymptoms=simulationConfig.chanceToGetSymptoms;
+			this.lethality=simulationConfig.lethality;}
+		
 
 	public void k()
 	{}

@@ -11,15 +11,13 @@ public class simulationConfig {
 	
 	//Person config
 	public static double chanceToKill=0.01;
-	public static double chanceToGetSymptoms=0.4;
 	public static double chanceToVisitPublic=0.1;
 	public static boolean quarantineOnTest = false;
 	public static boolean contactTracing = false;
 	public static boolean maskEnforcement = false;
 	public static Building publicEventBuilding=null;
 	public static int testCooldown = 500;
-	public static double lethality = 0.1;
-	public static String virusType = "Covid 19";
+
 	//Building config
 	public static int lockdownPeriod = 1500;
 	public static boolean lockdownOnTest = false;
@@ -43,11 +41,15 @@ public class simulationConfig {
 	public static double socialDistancing_radius=2.0;
 	public static Boolean socialDistancing = false;		
 	public static Boolean limitedReOpening=false;		
-	public static double reopenCapacity = 0.5;			
+
+	
+	//Virus config
+	public static String virusType = "INF";  // take from dropdown
 	public static int infectionPeriod = 1500;
 	public static int quarantinePeriod = 1500;
 	public static int incubationPeriod = 500;
-	
+	public static double lethality = 0.1;
+	public static double chanceToGetSymptoms=0.4;
 	
 	//GUI config
 	public static String houseColor="#f8fc03";
@@ -65,11 +67,27 @@ public class simulationConfig {
 	
 	public simulationConfig(String path) throws IOException {
 		prop = readPropertiesFile(path);
+		if (virusType=="INF")
+			{infectionPeriod = Integer.parseInt(prop.getProperty("INFinfectionPeriod"));
+			quarantinePeriod = Integer.parseInt(prop.getProperty("INFquarantinePeriod"));
+			incubationPeriod = Integer.parseInt(prop.getProperty("INFincubationPeriod"));
+			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("INFchanceToGetSymptoms"));
+			lethality = Double.parseDouble(prop.getProperty("INFlethality"));}
+		else if (virusType=="COV1") {
+			infectionPeriod = Integer.parseInt(prop.getProperty("COV1infectionPeriod"));
+			quarantinePeriod = Integer.parseInt(prop.getProperty("COV1quarantinePeriod"));
+			incubationPeriod = Integer.parseInt(prop.getProperty("COV1incubationPeriod"));
+			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV1chanceToGetSymptoms"));
+			lethality = Double.parseDouble(prop.getProperty("COV1lethality"));
+		}
+		else {
+			infectionPeriod = Integer.parseInt(prop.getProperty("COV2infectionPeriod"));
+			quarantinePeriod = Integer.parseInt(prop.getProperty("COV2quarantinePeriod"));
+			incubationPeriod = Integer.parseInt(prop.getProperty("COV2incubationPeriod"));
+			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV2chanceToGetSymptoms"));
+			lethality = Double.parseDouble(prop.getProperty("COV2lethality"));
+		}
 		
-		infectionPeriod = Integer.parseInt(prop.getProperty("infectionPeriod"));
-		quarantinePeriod = Integer.parseInt(prop.getProperty("quarantinePeriod"));
-		incubationPeriod = Integer.parseInt(prop.getProperty("incubationPeriod"));
-		chanceToGetSymptoms = Double.parseDouble(prop.getProperty("chanceToGetSymptoms"));
 		chanceToKill = Double.parseDouble(prop.getProperty("chanceToKill"));
 		chanceToVisitPublic = Double.parseDouble(prop.getProperty("chanceToVisitPublic"));
 		quarantineOnTest = Boolean.parseBoolean(prop.getProperty("quarantineOnTest"));

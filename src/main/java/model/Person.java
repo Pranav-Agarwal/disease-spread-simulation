@@ -7,7 +7,7 @@ import java.util.Random;
 public class Person {
 
 	public static enum State {WORKING, MOVING, IDLE};
-	Virus v1 =new Virus();
+	Virus v1 =new Virus(simulationConfig.virusType);
 	Boolean isInfected=false;
 	Boolean isTestedInfected=false;
 	Boolean isImmune=false;
@@ -32,7 +32,7 @@ public class Person {
 	
 	//config parameters
 
-	double chanceToGetSymptoms;
+	
 	double chanceToKill;
 	double chanceToVisitPublic;
 	
@@ -47,7 +47,6 @@ public class Person {
 		else this.currentLocation = workplace;
 		this.x = currentLocation.x;
 		this.y = currentLocation.y;
-		chanceToGetSymptoms=simulationConfig.chanceToGetSymptoms;
 		this.chanceToKill= chanceToKill();
 		chanceToVisitPublic=simulationConfig.chanceToVisitPublic;
 	}
@@ -69,7 +68,7 @@ public class Person {
 				}
 			}
 			else if(ticksSinceInfected==v1.incubationPeriod) {
-				if(Math.random()<chanceToGetSymptoms) {
+				if(Math.random()<v1.chanceToGetSymptoms) {
 					isSymptomatic = true;
 					if(!isTestedInfected) takeTest();
 				}

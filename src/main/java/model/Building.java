@@ -24,7 +24,7 @@ public abstract class Building {
 	
 	public void update() {
 		if(isLockdown) timeSinceLockdown++;
-		if(timeSinceLockdown>simulationConfig.lockdownPeriod) {
+		if(simulationConfig.officeLockdown==false && timeSinceLockdown>simulationConfig.lockdownPeriod) {
 		timeSinceLockdown=0;
 		isLockdown=false;}
 	}

@@ -119,10 +119,14 @@ public class GUIConfig implements ActionListener{
 		frame.getContentPane().add(officeLockdownToggle);
 		officeLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
-		        if (officeLockdownToggle.isSelected())
+		        if (officeLockdownToggle.isSelected()) {
+		        	simulationConfig.officeLockdown=true;
 		        	Map.instance.lockdownBuildings(Map.offices);
-		        else  
+		        }
+		        else {
+		        	simulationConfig.officeLockdown=false;
 		        	Map.instance.liftLockdownBuildings(Map.offices);  
+		        }
 		    }
 		});
 		

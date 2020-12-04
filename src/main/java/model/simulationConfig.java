@@ -10,20 +10,27 @@ public class simulationConfig {
 	private static Properties prop;
 	
 	//Person config
-	public static double chanceToKill=0.01;
 	public static double chanceToVisitPublic=0.1;
+
+	//Simulation config
+	public static int lockdownPeriod = 1500;
+	public static double limitedOccupancyPercentage=0.5;
+	public static double socialDistancing_radius=2.0;
+	public static int testCooldown = 500;
+	
+	//Simulation state - not taken from config, changed at runtime
+	public static Boolean socialDistancing = false;		
+	public static Boolean limitedReOpening=false;
+	public static Building publicEventBuilding=null;
 	public static boolean quarantineOnTest = false;
 	public static boolean contactTracing = false;
 	public static boolean maskEnforcement = false;
-	public static Building publicEventBuilding=null;
-	public static int testCooldown = 500;
-
-	//Building config
-	public static int lockdownPeriod = 1500;
 	public static boolean lockdownOnTest = false;
-	public static double limitedOccupancyPercentage=0.5;
+	public static boolean officeLockdown = false; 
+	public static boolean publicLockdown = false; 
 	
 	//Map config
+	public static String mapType = "urban";  // take from dropdown
 	public static boolean showGUI = true;
 	public static int size=300;
 	public static int peopleCount=1000;
@@ -37,12 +44,8 @@ public class simulationConfig {
 	public static int officeSize = 13;
 	public static int officeSizeVariation=3;
 	public static double publicMinSize=0.9;
-	public static double publicMaxSize=0.95;
-	public static double socialDistancing_radius=2.0;
-	public static Boolean socialDistancing = false;		
-	public static Boolean limitedReOpening=false;		
+	public static double publicMaxSize=0.95;	
 
-	
 	//Virus config
 	public static String virusType = "INF";  // take from dropdown
 	public static int infectionPeriod = 1500;
@@ -67,14 +70,25 @@ public class simulationConfig {
 	
 	public simulationConfig(String path) throws IOException {
 		prop = readPropertiesFile(path);
+		
+		//Person config
+		chanceToVisitPublic = Double.parseDouble(prop.getProperty("chanceToVisitPublic"));
+		
+		//Simulation config
+		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
+		limitedOccupancyPercentage=Double.parseDouble(prop.getProperty("limitedOccupancyPercentage"));
+		testCooldown = Integer.parseInt(prop.getProperty("testCooldown"));;
+		socialDistancing_radius=Double.parseDouble(prop.getProperty("socialDistancing_radius"));
+		
+		//Virus config
 		virusType = prop.getProperty("virusType");
-		if (virusType=="INF")
+		if (virusType.equals("INF"))
 			{infectionPeriod = Integer.parseInt(prop.getProperty("INFinfectionPeriod"));
 			quarantinePeriod = Integer.parseInt(prop.getProperty("INFquarantinePeriod"));
 			incubationPeriod = Integer.parseInt(prop.getProperty("INFincubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("INFchanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("INFlethality"));}
-		else if (virusType=="COV1") {
+		else if (virusType.equals("COV1")) {
 			infectionPeriod = Integer.parseInt(prop.getProperty("COV1infectionPeriod"));
 			quarantinePeriod = Integer.parseInt(prop.getProperty("COV1quarantinePeriod"));
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV1incubationPeriod"));
@@ -89,28 +103,58 @@ public class simulationConfig {
 			lethality = Double.parseDouble(prop.getProperty("COV2lethality"));
 		}
 		
-		chanceToKill = Double.parseDouble(prop.getProperty("chanceToKill"));
-		chanceToVisitPublic = Double.parseDouble(prop.getProperty("chanceToVisitPublic"));
-		quarantineOnTest = Boolean.parseBoolean(prop.getProperty("quarantineOnTest"));
-		contactTracing = Boolean.parseBoolean(prop.getProperty("contactTracing"));
-		maskEnforcement = Boolean.parseBoolean(prop.getProperty("maskEnforcement"));
-		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
-		lockdownOnTest = Boolean.parseBoolean(prop.getProperty("lockdownOnTest"));
-		limitedOccupancyPercentage=Double.parseDouble(prop.getProperty("limitedOccupancyPercentage"));
-		showGUI = Boolean.parseBoolean(prop.getProperty("showGUI"));
-		size=Integer.parseInt(prop.getProperty("size"));
-		peopleCount=Integer.parseInt(prop.getProperty("peopleCount"));
-		virusSeedCount=Integer.parseInt(prop.getProperty("virusSeedCount"));
-		closenessFactor=Integer.parseInt(prop.getProperty("closenessFactor"));
-		houseCount=Integer.parseInt(prop.getProperty("houseCount"));
-		officeCount=Integer.parseInt(prop.getProperty("officeCount"));
-		publicCount=Integer.parseInt(prop.getProperty("publicCount"));
-		houseSize=Integer.parseInt(prop.getProperty("houseSize"));
-		houseSizeVariation=Integer.parseInt(prop.getProperty("houseSizeVariation"));
-		officeSize = Integer.parseInt(prop.getProperty("officeSize"));
-		officeSizeVariation=Integer.parseInt(prop.getProperty("officeSizeVariation"));
-		publicMinSize=Double.parseDouble(prop.getProperty("publicMinSize"));
-		publicMaxSize=Double.parseDouble(prop.getProperty("publicMaxSize"));
+		//Map config
+		mapType = prop.getProperty("mapType");
+		if (mapType.equals("rural")) {
+			showGUI = Boolean.parseBoolean(prop.getProperty("r_showGUI"));
+			size=Integer.parseInt(prop.getProperty("r_size"));
+			peopleCount=Integer.parseInt(prop.getProperty("r_peopleCount"));
+			virusSeedCount=Integer.parseInt(prop.getProperty("r_virusSeedCount"));
+			closenessFactor=Integer.parseInt(prop.getProperty("r_closenessFactor"));
+			houseCount=Integer.parseInt(prop.getProperty("r_houseCount"));
+			officeCount=Integer.parseInt(prop.getProperty("r_officeCount"));
+			publicCount=Integer.parseInt(prop.getProperty("r_publicCount"));
+			houseSize=Integer.parseInt(prop.getProperty("r_houseSize"));
+			houseSizeVariation=Integer.parseInt(prop.getProperty("r_houseSizeVariation"));
+			officeSize = Integer.parseInt(prop.getProperty("r_officeSize"));
+			officeSizeVariation=Integer.parseInt(prop.getProperty("r_officeSizeVariation"));
+			publicMinSize=Double.parseDouble(prop.getProperty("r_publicMinSize"));
+			publicMaxSize=Double.parseDouble(prop.getProperty("r_publicMaxSize"));
+		}
+		else if (mapType.equals("urban")) {
+			showGUI = Boolean.parseBoolean(prop.getProperty("u_showGUI"));
+			size=Integer.parseInt(prop.getProperty("u_size"));
+			peopleCount=Integer.parseInt(prop.getProperty("u_peopleCount"));
+			virusSeedCount=Integer.parseInt(prop.getProperty("u_virusSeedCount"));
+			closenessFactor=Integer.parseInt(prop.getProperty("u_closenessFactor"));
+			houseCount=Integer.parseInt(prop.getProperty("u_houseCount"));
+			officeCount=Integer.parseInt(prop.getProperty("u_officeCount"));
+			publicCount=Integer.parseInt(prop.getProperty("u_publicCount"));
+			houseSize=Integer.parseInt(prop.getProperty("u_houseSize"));
+			houseSizeVariation=Integer.parseInt(prop.getProperty("u_houseSizeVariation"));
+			officeSize = Integer.parseInt(prop.getProperty("u_officeSize"));
+			officeSizeVariation=Integer.parseInt(prop.getProperty("u_officeSizeVariation"));
+			publicMinSize=Double.parseDouble(prop.getProperty("u_publicMinSize"));
+			publicMaxSize=Double.parseDouble(prop.getProperty("u_publicMaxSize"));
+		}
+		else {
+			showGUI = Boolean.parseBoolean(prop.getProperty("c_showGUI"));
+			size=Integer.parseInt(prop.getProperty("c_size"));
+			peopleCount=Integer.parseInt(prop.getProperty("c_peopleCount"));
+			virusSeedCount=Integer.parseInt(prop.getProperty("c_virusSeedCount"));
+			closenessFactor=Integer.parseInt(prop.getProperty("c_closenessFactor"));
+			houseCount=Integer.parseInt(prop.getProperty("c_houseCount"));
+			officeCount=Integer.parseInt(prop.getProperty("c_officeCount"));
+			publicCount=Integer.parseInt(prop.getProperty("c_publicCount"));
+			houseSize=Integer.parseInt(prop.getProperty("c_houseSize"));
+			houseSizeVariation=Integer.parseInt(prop.getProperty("c_houseSizeVariation"));
+			officeSize = Integer.parseInt(prop.getProperty("c_officeSize"));
+			officeSizeVariation=Integer.parseInt(prop.getProperty("c_officeSizeVariation"));
+			publicMinSize=Double.parseDouble(prop.getProperty("c_publicMinSize"));
+			publicMaxSize=Double.parseDouble(prop.getProperty("c_publicMaxSize"));
+		}
+		
+		//GUI props
 		houseColor=prop.getProperty("houseColor");
 		officeColor=prop.getProperty("officeColor");
 		publicColor=prop.getProperty("publicColor");

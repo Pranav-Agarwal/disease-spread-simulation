@@ -26,5 +26,8 @@ target
 *.rar
 /bin/
 
+#log files
+*.log
+*.lck
 
 *.bak

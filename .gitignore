@@ -8,6 +8,9 @@ target
 #output file
 *.csv
 
+#output graph
+*.png
+
 # BlueJ files
 *.ctxt
 

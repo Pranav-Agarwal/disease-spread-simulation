@@ -19,6 +19,9 @@ public class simulationConfig {
 	public static int testCooldown = 500;
 	
 	//Simulation state - not taken from config, changed at runtime
+	public static Boolean hasStarted = false;
+	public static String mapType = "urban";  // take from dropdown
+	public static String virusType = "INF";  // take from dropdown
 	public static Boolean socialDistancing = false;		
 	public static Boolean limitedReOpening=false;
 	public static Building publicEventBuilding=null;
@@ -30,7 +33,7 @@ public class simulationConfig {
 	public static boolean publicLockdown = false; 
 	
 	//Map config
-	public static String mapType = "urban";  // take from dropdown
+
 	public static boolean showGUI = true;
 	public static int size=300;
 	public static int peopleCount=1000;
@@ -47,7 +50,6 @@ public class simulationConfig {
 	public static double publicMaxSize=0.95;	
 
 	//Virus config
-	public static String virusType = "INF";  // take from dropdown
 	public static int infectionPeriod = 1500;
 	public static int quarantinePeriod = 1500;
 	public static int incubationPeriod = 500;
@@ -81,14 +83,13 @@ public class simulationConfig {
 		socialDistancing_radius=Double.parseDouble(prop.getProperty("socialDistancing_radius"));
 		
 		//Virus config
-		virusType = prop.getProperty("virusType");
-		if (virusType.equals("INF"))
+		if (virusType.equals("influenza"))
 			{infectionPeriod = Integer.parseInt(prop.getProperty("INFinfectionPeriod"));
 			quarantinePeriod = Integer.parseInt(prop.getProperty("INFquarantinePeriod"));
 			incubationPeriod = Integer.parseInt(prop.getProperty("INFincubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("INFchanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("INFlethality"));}
-		else if (virusType.equals("COV1")) {
+		else if (virusType.equals("covid1")) {
 			infectionPeriod = Integer.parseInt(prop.getProperty("COV1infectionPeriod"));
 			quarantinePeriod = Integer.parseInt(prop.getProperty("COV1quarantinePeriod"));
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV1incubationPeriod"));
@@ -104,7 +105,6 @@ public class simulationConfig {
 		}
 		
 		//Map config
-		mapType = prop.getProperty("mapType");
 		if (mapType.equals("rural")) {
 			showGUI = Boolean.parseBoolean(prop.getProperty("r_showGUI"));
 			size=Integer.parseInt(prop.getProperty("r_size"));
@@ -138,20 +138,20 @@ public class simulationConfig {
 			publicMaxSize=Double.parseDouble(prop.getProperty("u_publicMaxSize"));
 		}
 		else {
-			showGUI = Boolean.parseBoolean(prop.getProperty("c_showGUI"));
-			size=Integer.parseInt(prop.getProperty("c_size"));
-			peopleCount=Integer.parseInt(prop.getProperty("c_peopleCount"));
-			virusSeedCount=Integer.parseInt(prop.getProperty("c_virusSeedCount"));
-			closenessFactor=Integer.parseInt(prop.getProperty("c_closenessFactor"));
-			houseCount=Integer.parseInt(prop.getProperty("c_houseCount"));
-			officeCount=Integer.parseInt(prop.getProperty("c_officeCount"));
-			publicCount=Integer.parseInt(prop.getProperty("c_publicCount"));
-			houseSize=Integer.parseInt(prop.getProperty("c_houseSize"));
-			houseSizeVariation=Integer.parseInt(prop.getProperty("c_houseSizeVariation"));
-			officeSize = Integer.parseInt(prop.getProperty("c_officeSize"));
-			officeSizeVariation=Integer.parseInt(prop.getProperty("c_officeSizeVariation"));
-			publicMinSize=Double.parseDouble(prop.getProperty("c_publicMinSize"));
-			publicMaxSize=Double.parseDouble(prop.getProperty("c_publicMaxSize"));
+			showGUI = Boolean.parseBoolean(prop.getProperty("s_showGUI"));
+			size=Integer.parseInt(prop.getProperty("s_size"));
+			peopleCount=Integer.parseInt(prop.getProperty("s_peopleCount"));
+			virusSeedCount=Integer.parseInt(prop.getProperty("s_virusSeedCount"));
+			closenessFactor=Integer.parseInt(prop.getProperty("s_closenessFactor"));
+			houseCount=Integer.parseInt(prop.getProperty("s_houseCount"));
+			officeCount=Integer.parseInt(prop.getProperty("s_officeCount"));
+			publicCount=Integer.parseInt(prop.getProperty("s_publicCount"));
+			houseSize=Integer.parseInt(prop.getProperty("s_houseSize"));
+			houseSizeVariation=Integer.parseInt(prop.getProperty("s_houseSizeVariation"));
+			officeSize = Integer.parseInt(prop.getProperty("s_officeSize"));
+			officeSizeVariation=Integer.parseInt(prop.getProperty("s_officeSizeVariation"));
+			publicMinSize=Double.parseDouble(prop.getProperty("s_publicMinSize"));
+			publicMaxSize=Double.parseDouble(prop.getProperty("s_publicMaxSize"));
 		}
 		
 		//GUI props

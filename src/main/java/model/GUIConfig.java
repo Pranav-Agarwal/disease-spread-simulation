@@ -28,7 +28,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JToggleButton;
 import java.awt.Font;
 
-public class GUIConfig implements ActionListener{
+public class GUIConfig{
 
 	protected JFrame frame;                          //top level container of the app
 	protected HashMap<String,Component> components;  //HashMap of components that provides an easy interface to take input from them	
@@ -58,12 +58,33 @@ public class GUIConfig implements ActionListener{
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setTitle("Configuration");
-		frame.setSize(new Dimension(300, 528));
+		frame.setSize(new Dimension(300, 650));
 		frame.getContentPane().setLayout(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JComboBox<String> virusDropdown = new JComboBox<>();
+		virusDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"influenza", "covid1", "covid2"}));
+		virusDropdown.setSelectedIndex(0);
+		virusDropdown.setBounds(120, 28, 146, 22);
+		frame.getContentPane().add(virusDropdown);
+		
+		JComboBox<String> mapDropdown = new JComboBox<>();
+		mapDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"urban", "rural", "suburban"}));
+		mapDropdown.setSelectedIndex(0);
+		mapDropdown.setBounds(120, 69, 146, 22);
+		frame.getContentPane().add(mapDropdown);
+		
+		JLabel lblNewLabel_1 = new JLabel("Virus Type");
+		lblNewLabel_1.setBounds(26, 32, 84, 14);
+		frame.getContentPane().add(lblNewLabel_1);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("Map Type");
+		lblNewLabel_1_1.setBounds(26, 73, 84, 14);
+		frame.getContentPane().add(lblNewLabel_1_1);
 		
 		JPanel speedPanel = new JPanel();
 		speedPanel.setBorder(new SoftBevelBorder(BevelBorder.RAISED, null, null, null, null));
-		speedPanel.setBounds(10,11,274,163);
+		speedPanel.setBounds(10,141,274,163);
 		frame.getContentPane().add(speedPanel);
 		speedPanel.setLayout(null);
 		
@@ -72,6 +93,7 @@ public class GUIConfig implements ActionListener{
 		speedPanel.add(lblNewLabel);
 		
 		JSlider speedSlider = new JSlider();
+		speedSlider.setEnabled(false);
 		speedSlider.setPaintTicks(true);
 		speedSlider.setMajorTickSpacing(1);
 		speedSlider.setSnapToTicks(true);
@@ -87,7 +109,20 @@ public class GUIConfig implements ActionListener{
 		speedPanel.add(speedSlider);
 		components.put("speedSlider", speedSlider);
 		
+		
+		JToggleButton exitToggleButton = new JToggleButton("Save data and Exit");
+		exitToggleButton.setEnabled(false);
+		exitToggleButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		exitToggleButton.setBounds(29, 121, 222, 23);
+		speedPanel.add(exitToggleButton);
+		exitToggleButton.addItemListener(new ItemListener() {
+		    public void itemStateChanged(ItemEvent eve) {  
+		    	Simulator.stopSim();
+		    }
+		});
+		
 		JToggleButton playButton = new JToggleButton("Play");
+		playButton.setEnabled(false);
 		playButton.setFont(new Font("Tahoma", Font.BOLD, 11));
 		playButton.setBounds(29, 87, 222, 23);
 		speedPanel.add(playButton);
@@ -104,18 +139,9 @@ public class GUIConfig implements ActionListener{
 		    }
 		});
 		
-		JToggleButton exitToggleButton = new JToggleButton("Save data and Exit");
-		exitToggleButton.setFont(new Font("Tahoma", Font.BOLD, 11));
-		exitToggleButton.setBounds(29, 121, 222, 23);
-		speedPanel.add(exitToggleButton);
-		exitToggleButton.addItemListener(new ItemListener() {
-		    public void itemStateChanged(ItemEvent eve) {  
-		    	Simulator.stopSim();
-		    }
-		});
-		
 		JToggleButton officeLockdownToggle = new JToggleButton("Lockdown Offices");
-		officeLockdownToggle.setBounds(20, 185, 264, 23);
+		officeLockdownToggle.setEnabled(false);
+		officeLockdownToggle.setBounds(20, 315, 264, 23);
 		frame.getContentPane().add(officeLockdownToggle);
 		officeLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -131,7 +157,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton publicLockdownToggle = new JToggleButton("Lockdown Public Places");
-		publicLockdownToggle.setBounds(20, 219, 264, 23);
+		publicLockdownToggle.setEnabled(false);
+		publicLockdownToggle.setBounds(20, 349, 264, 23);
 		frame.getContentPane().add(publicLockdownToggle);
 		publicLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -143,7 +170,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton publicEventToggle = new JToggleButton("Active Public Event");
-		publicEventToggle.setBounds(20, 253, 264, 23);
+		publicEventToggle.setEnabled(false);
+		publicEventToggle.setBounds(20, 383, 264, 23);
 		frame.getContentPane().add(publicEventToggle);
 		publicEventToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -155,7 +183,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton quarantineToggle = new JToggleButton("Quarantine on +ve test");
-		quarantineToggle.setBounds(20, 287, 264, 23);
+		quarantineToggle.setEnabled(false);
+		quarantineToggle.setBounds(20, 417, 264, 23);
 		frame.getContentPane().add(quarantineToggle);
 		quarantineToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -169,7 +198,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton contactTraceToggle = new JToggleButton("Contact trace on +ve test");
-		contactTraceToggle.setBounds(20, 321, 264, 23);
+		contactTraceToggle.setEnabled(false);
+		contactTraceToggle.setBounds(20, 451, 264, 23);
 		frame.getContentPane().add(contactTraceToggle);
 		contactTraceToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -181,7 +211,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton maskToggle = new JToggleButton("Enforce masks");
-		maskToggle.setBounds(20, 355, 264, 23);
+		maskToggle.setEnabled(false);
+		maskToggle.setBounds(20, 485, 264, 23);
 		frame.getContentPane().add(maskToggle);
 		maskToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -193,7 +224,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton testOfficeLockdownToggle = new JToggleButton("Lockdown office on +ve test");
-		testOfficeLockdownToggle.setBounds(20, 389, 264, 23);
+		testOfficeLockdownToggle.setEnabled(false);
+		testOfficeLockdownToggle.setBounds(20, 519, 264, 23);
 		frame.getContentPane().add(testOfficeLockdownToggle);
 		testOfficeLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -205,7 +237,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton limitOfficeCapacityToggle = new JToggleButton("Limit office building capacity");
-		limitOfficeCapacityToggle.setBounds(20, 423, 264, 23);
+		limitOfficeCapacityToggle.setEnabled(false);
+		limitOfficeCapacityToggle.setBounds(20, 553, 264, 23);
 		frame.getContentPane().add(limitOfficeCapacityToggle);
 		limitOfficeCapacityToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -217,7 +250,8 @@ public class GUIConfig implements ActionListener{
 		});
 		
 		JToggleButton socialDistancingToggle = new JToggleButton("Enforce Social Distancing");
-		socialDistancingToggle.setBounds(20, 457, 264, 23);
+		socialDistancingToggle.setEnabled(false);
+		socialDistancingToggle.setBounds(20, 587, 264, 23);
 		frame.getContentPane().add(socialDistancingToggle);
 		socialDistancingToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
@@ -227,19 +261,32 @@ public class GUIConfig implements ActionListener{
 		        	simulationConfig.socialDistancing = false;  
 		    }
 		});
-    }
-	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if( e.getActionCommand().equalsIgnoreCase("Lockdown")){
-			if(((JComboBox)components.get("lockdownTypeComboBox")).getSelectedIndex()==0) Map.instance.lockdownBuildings(Map.offices);
-			else  Map.instance.lockdownBuildings(Map.public_places);
-		}
 		
-		if( e.getActionCommand().equalsIgnoreCase("Open")){
-			if(((JComboBox)components.get("lockdownTypeComboBox")).getSelectedIndex()==0) Map.instance.liftLockdownBuildings(Map.offices);
-			else  Map.instance.liftLockdownBuildings(Map.public_places);
-		}
-	}
+		JToggleButton initializeButton = new JToggleButton("Initialize");
+		initializeButton.setFont(new Font("Tahoma", Font.BOLD, 11));
+		initializeButton.setBounds(36, 102, 222, 23);
+		frame.getContentPane().add(initializeButton);
+		initializeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+		    	simulationConfig.virusType = (String) virusDropdown.getSelectedItem();
+		    	simulationConfig.mapType = (String) mapDropdown.getSelectedItem();
+		    	mapDropdown.setEnabled(false);
+		    	virusDropdown.setEnabled(false);
+		    	initializeButton.setEnabled(false);
+		    	officeLockdownToggle.setEnabled(true);
+		    	socialDistancingToggle.setEnabled(true);
+		    	limitOfficeCapacityToggle.setEnabled(true);
+		    	testOfficeLockdownToggle.setEnabled(true);
+		    	maskToggle.setEnabled(true);
+		    	contactTraceToggle.setEnabled(true);
+		    	quarantineToggle.setEnabled(true);
+		    	publicEventToggle.setEnabled(true);
+		    	publicLockdownToggle.setEnabled(true);
+		    	exitToggleButton.setEnabled(true);
+		    	playButton.setEnabled(true);
+		    	speedSlider.setEnabled(true);
+		    	simulationConfig.hasStarted=true;				
+			}			
+		});		
+    }
 }

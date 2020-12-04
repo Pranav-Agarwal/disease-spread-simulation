@@ -1,10 +1,12 @@
 package model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Logger;
 
 public class OutputWriter {
 	
@@ -16,8 +18,12 @@ public class OutputWriter {
 	public OutputWriter() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyy HH-mm-ss");
 		path = "output/Sim_data "+LocalDateTime.now().format(formatter)+"/";
-		new File(path).mkdir();
-
+		try {
+			new File("output").mkdir();
+			new File(path).mkdir();
+		}
+		catch(RuntimeException e) {
+		}
 		try {
 			simWriter = new FileWriter(path+"sim_data.csv",true);
 			simWriter.write("tick,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests\n");
@@ -33,7 +39,7 @@ public class OutputWriter {
 	public static void writeSimData() {
 		try {
 			simWriter.write(Simulator.simTicks+","+Map.totalInfected+","+Map.totalActiveInfected+","+Map.totalDead+","+Map.totalImmune+","+Map.totalQuarantined+","+Map.totalTests+","+Map.totalPositiveTests+"\n");
-		} catch (IOException e) {
+		} catch (IOException | NullPointerException e) {
 			e.printStackTrace();
 		}
 	}

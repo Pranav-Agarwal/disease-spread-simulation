@@ -10,9 +10,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimerTask;
 
-import javafx.scene.Scene;
-import javafx.scene.image.WritableImage;
-
 public class Simulator extends TimerTask{
 
 	static int speed = 2;

@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
@@ -35,7 +37,6 @@ public class Person {
 	
 	double chanceToKill;
 	double chanceToVisitPublic;
-	
 	
 	public Person(Location home, Location workplace) {
 		this.home = home;
@@ -105,7 +106,8 @@ public class Person {
 				tasks.add(new WorkTask(this,200+random.nextInt(200)));
 			}
 		}
-		if(!tasks.isEmpty() && tasks.peek().run()) tasks.remove();
+		if(!tasks.isEmpty() && tasks.peek().run()) tasks.remove();		
+		
 	}
 	
 	public void tryToInfect(Person spreader) {	// modify values based on efficacy

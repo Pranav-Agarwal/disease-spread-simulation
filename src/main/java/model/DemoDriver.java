@@ -24,6 +24,9 @@ public class DemoDriver {
 		Map.instance.seedBuilding(Type.HOUSE,simulationConfig.houseCount,simulationConfig.houseSize,simulationConfig.houseSizeVariation);
 		Map.instance.addPeople(simulationConfig.peopleCount);
 		Map.instance.seedVirus(simulationConfig.virusSeedCount);
+
+		Map.realTimeChart= new Charts();
+
 		//map.publicEventBuilding = map.public_places.get(0);
         JFrame frame = new JFrame("Disease");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

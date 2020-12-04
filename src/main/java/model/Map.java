@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -24,7 +25,7 @@ public class Map {
 	static List<Building> offices = new ArrayList<>();
 	static List<Building> public_places = new ArrayList<>();
 	static public Map instance;
-	
+	static public Charts realTimeChart;
 	//properties
 	static int size;
 	
@@ -38,6 +39,25 @@ public class Map {
 	static int totalTests = 0;
 	static int totalPositiveTests = 0;
 	
+	//Chart properties
+	public static LinkedList<Integer> xData = new LinkedList<>();
+	public static LinkedList<Integer> yData_totalInfected = new LinkedList<>();
+	public static LinkedList<Integer> yData_totalActiveInfected = new LinkedList<>();
+	public static LinkedList<Integer> yData_totalDied = new LinkedList<>();
+	
+	public static void addChartValue(LinkedList<Integer> Data, Integer value)
+	{
+		//System.out.println(Data+ " "+ value );
+		Data.add(value);
+	}
+	
+	public static void updateChart() {
+		addChartValue(xData,Simulator.simTicks/4);
+		addChartValue(yData_totalInfected, Map.totalInfected);
+		addChartValue(yData_totalActiveInfected, Map.totalActiveInfected);
+		addChartValue(yData_totalDied, Map.totalDead);
+		realTimeChart.realTimeupdates();
+	}
 	
 	public Map() {
 		if(instance==null) instance = this;

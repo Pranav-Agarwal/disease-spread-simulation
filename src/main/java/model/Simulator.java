@@ -10,6 +10,9 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.TimerTask;
 
+import javafx.scene.Scene;
+import javafx.scene.image.WritableImage;
+
 public class Simulator extends TimerTask{
 
 	static int speed = 2;
@@ -18,6 +21,7 @@ public class Simulator extends TimerTask{
 	public int actualTicks;
 	public static int simTicks;
     private int cutoff = 0;
+    
 	
 	public Simulator(GUICanvas canvas) {
 		this.canvas = canvas;
@@ -28,6 +32,7 @@ public class Simulator extends TimerTask{
 	
 	@Override
 	public void run() {
+		
 		//map.refreshAndPrintMap();
 		//if(Map.totalActiveInfected==0 || Map.totalInfected>=cutoff) stopSim();
 		if(simulationConfig.showGUI) canvas.repaint();
@@ -37,6 +42,8 @@ public class Simulator extends TimerTask{
 				simTicks++;
 				Map.instance.update();
 				OutputWriter.writeSimData();
+				if(simTicks%4==0) {
+				Map.updateChart();}
 				if(actualTicks%10==0) {
 					Map.instance.spreadDisease();
 				}
@@ -52,6 +59,7 @@ public class Simulator extends TimerTask{
 	public static void stopSim() {
 		playing = false;
 		OutputWriter.closeAndSave();
+		Map.realTimeChart.saveBitmapImage();
 		System.exit(0);
 	}
 

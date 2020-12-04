@@ -11,7 +11,7 @@ public class OutputWriter {
 	public static FileWriter simWriter;
 	public static FileWriter infectionWriter;
 	public static FileWriter deathWriter;
-	private String path;
+	public static String path;
 	
 	public OutputWriter() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyy HH-mm-ss");

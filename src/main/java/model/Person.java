@@ -53,8 +53,6 @@ public class Person {
 	}
 	
 	public void update() {
-		//System.out.println(x+" "+y+" "+home.x+" "+home.y+" "+workplace.x+" "+workplace.y+" "+tasks.size()+" "+currentLocation.x+" "+currentLocation.y);
-		//if(isInfected && state==State.MOVING) infectInTransit();
 		ticksSinceTested++;
 		if(isInfected) {
 			ticksSinceInfected++;
@@ -78,32 +76,31 @@ public class Person {
 		}
 		if(isQuarantined) {
 			ticksSinceQuarantined++;
-			if(tasks.isEmpty() && currentLocation!=home) {
+			if(currentLocation!=home && tasks.isEmpty()) {
 				tasks.add(new MoveTask(this,home));
 			}
-			if (ticksSinceQuarantined>v1.quarantinePeriod && isQuarantined) {
+			if (ticksSinceQuarantined>v1.quarantinePeriod) {
 				isQuarantined=false;
 				Map.totalQuarantined--;
 			}
 		}
 		else if(tasks.isEmpty()) {
-			Random random = new Random();
 			if(Math.random()<chanceToVisitPublic) {
 				tasks.clear();
 				Location publicLocation = pickPublicLocation();
 				if(!publicLocation.building.isLockdown) {
 					tasks.add(new MoveTask(this,publicLocation));
-					tasks.add(new WorkTask(this,100+random.nextInt(200)));
+					tasks.add(new WorkTask(this,simulationConfig.timeSpentInPublic*(0.8+Math.random()*0.4)));  //Random +- 20%
 				}			
 				
 			}
 			else if(currentLocation == home && !workplace.building.isLockdown && (!simulationConfig.limitedReOpening || ((double)workplace.building.getCurrentOccupancy())/((OfficeBuilding)workplace.building).workers.size()<simulationConfig.limitedOccupancyPercentage)){  
 				tasks.add(new MoveTask(this,workplace));
-				tasks.add(new WorkTask(this,200+random.nextInt(100)));
+				tasks.add(new WorkTask(this,simulationConfig.timeSpentInOffice*(0.8+Math.random()*0.4))); //Random +- 20%
 			}	
 			else{
 				tasks.add(new MoveTask(this,home));
-				tasks.add(new WorkTask(this,200+random.nextInt(200)));
+				tasks.add(new WorkTask(this,simulationConfig.timeSpentInHome*(0.8+Math.random()*0.4))); //Random +- 20%
 			}
 		}
 		if(!tasks.isEmpty() && tasks.peek().run()) tasks.remove();		
@@ -134,21 +131,15 @@ public class Person {
 		
 	}
 	
-	private void infectInTransit() {
-		for(Person p : currentLocation.persons) {
-			if(!p.isInfected) p.tryToInfect(this);
-		}
-	}
-	
 	private Location pickPublicLocation() {
 		Random random = new Random();
 		Location randomPublicLocation;
 		if(simulationConfig.publicEventBuilding==null || random.nextDouble()<0.5) {
 			Building randomPublicBuilding = Map.public_places.get(random.nextInt(Map.public_places.size()));
-			randomPublicLocation = randomPublicBuilding.locations.get(random.nextInt(randomPublicBuilding.locations.size()));
+			randomPublicLocation = randomPublicBuilding.getRandomLocation();
 		}
 		else {
-			randomPublicLocation = simulationConfig.publicEventBuilding.locations.get(random.nextInt(simulationConfig.publicEventBuilding.locations.size()));
+			randomPublicLocation = simulationConfig.publicEventBuilding.getRandomLocation();
 		}
 		return randomPublicLocation;
 	}
@@ -176,9 +167,10 @@ public class Person {
 	}
 	
 	private void killPerson() {
-		// Map.spreadDisease();
-		currentLocation.persons.remove(this);
-		if (currentLocation.building!=null) currentLocation.building.persons.remove(this);
+		if(currentLocation!=null) {
+			currentLocation.persons.remove(this);
+			currentLocation.building.persons.remove(this);
+		}
 		((OfficeBuilding)workplace.building).workers.remove(this);
 		((HouseBuilding)home.building).residents.remove(this);
 		Map.totalDead++;

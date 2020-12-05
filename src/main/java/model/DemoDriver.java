@@ -35,7 +35,6 @@ public class DemoDriver {
 		Map.instance.addPeople(simulationConfig.peopleCount);
 		Map.instance.seedVirus(simulationConfig.virusSeedCount);
 		Map.realTimeChart= new Charts();
-		//map.publicEventBuilding = map.public_places.get(0);
         JFrame frame = new JFrame("Disease");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GUICanvas canvas = new GUICanvas();
@@ -44,13 +43,11 @@ public class DemoDriver {
         if (simulationConfig.showGUI) frame.setVisible(true);     
         new OutputWriter();
 		Simulator sim = new Simulator(canvas);
-		new Timer().schedule(sim, 100, 15);
+		new Timer().schedule(sim, 100, simulationConfig.baseUpdateRate);
 	}
 	
-	//TODO - edges on building painting
-	//TODO - closeness heuristic for offices and parks
-	//TODO - scale map down
-	//TODO - unwell -> testing -> self quarantine
-	//TODO - probabilistic chance of most hardcoded things
+	//TODO - discuss infection model
+	//TODO - discuss time scaling
+
 
 }

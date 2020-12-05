@@ -70,7 +70,7 @@ public class GUIConfig{
 		
 		JComboBox<String> mapDropdown = new JComboBox<>();
 		mapDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"urban", "rural", "suburban"}));
-		mapDropdown.setSelectedIndex(0);
+		mapDropdown.setSelectedIndex(2);
 		mapDropdown.setBounds(120, 69, 146, 22);
 		frame.getContentPane().add(mapDropdown);
 		
@@ -162,10 +162,14 @@ public class GUIConfig{
 		frame.getContentPane().add(publicLockdownToggle);
 		publicLockdownToggle.addItemListener(new ItemListener() {
 		    public void itemStateChanged(ItemEvent eve) {  
-		        if (publicLockdownToggle.isSelected())
+		        if (publicLockdownToggle.isSelected()) {
+		        	simulationConfig.publicLockdown=true;
 		        	Map.instance.lockdownBuildings(Map.public_places);
-		        else  
+		        }
+		        else {
+		        	simulationConfig.publicLockdown=false;
 		        	Map.instance.liftLockdownBuildings(Map.public_places);  
+		        }
 		    }
 		});
 		

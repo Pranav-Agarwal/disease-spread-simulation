@@ -3,11 +3,11 @@ package model;
 public class WorkTask extends Task {
 
 	int timePassed;
-	int timeOut;
+	double timeOut;
 
-	public WorkTask(Person person,int timeOut) {
+	public WorkTask(Person person,double d) {
 		super(person);
-		this.timeOut = timeOut;
+		this.timeOut = d;
 		this.timePassed=0;
 	}
 	

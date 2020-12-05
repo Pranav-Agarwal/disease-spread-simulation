@@ -11,8 +11,12 @@ public class simulationConfig {
 	
 	//Person config
 	public static double chanceToVisitPublic=0.1;
+	public static int timeSpentInPublic = 100;  //TO ADD
+	public static int timeSpentInOffice = 200;  //TO ADD
+	public static int timeSpentInHome = 300;  //TO ADD
 
 	//Simulation config
+	public static int baseUpdateRate = 15;
 	public static int lockdownPeriod = 1500;
 	public static double limitedOccupancyPercentage=0.5;
 	public static double socialDistancing_radius=2.0;
@@ -21,7 +25,7 @@ public class simulationConfig {
 	//Simulation state - not taken from config, changed at runtime
 	public static Boolean hasStarted = false;
 	public static String mapType = "urban";  // take from dropdown
-	public static String virusType = "INF";  // take from dropdown
+	public static String virusType = "influenza";  // take from dropdown
 	public static Boolean socialDistancing = false;		
 	public static Boolean limitedReOpening=false;
 	public static Building publicEventBuilding=null;
@@ -33,7 +37,6 @@ public class simulationConfig {
 	public static boolean publicLockdown = false; 
 	
 	//Map config
-
 	public static boolean showGUI = true;
 	public static int size=300;
 	public static int peopleCount=1000;
@@ -77,6 +80,7 @@ public class simulationConfig {
 		chanceToVisitPublic = Double.parseDouble(prop.getProperty("chanceToVisitPublic"));
 		
 		//Simulation config
+		baseUpdateRate = Integer.parseInt(prop.getProperty("baseUpdateRate"));
 		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
 		limitedOccupancyPercentage=Double.parseDouble(prop.getProperty("limitedOccupancyPercentage"));
 		testCooldown = Integer.parseInt(prop.getProperty("testCooldown"));;

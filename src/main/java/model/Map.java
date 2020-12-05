@@ -52,7 +52,7 @@ public class Map {
 	}
 	
 	public static void updateChart() {
-		addChartValue(xData,Simulator.simTicks/4);
+		addChartValue(xData,Simulator.simTicks);
 		addChartValue(yData_totalInfected, Map.totalInfected);
 		addChartValue(yData_totalActiveInfected, Map.totalActiveInfected);
 		addChartValue(yData_totalDied, Map.totalDead);
@@ -76,7 +76,7 @@ public class Map {
 		for(int i=0;i<count;i++) {
 			Building house = houses.get(random.nextInt(houses.size()));
 			Building office = pickRandomOffice(house);
-			Person newPerson = new Person(house.locations.get(random.nextInt(house.locations.size())),office.locations.get(random.nextInt(office.locations.size())));
+			Person newPerson = new Person(house.getRandomLocation(),office.getRandomLocation());
 			persons.add(newPerson);
 			((HouseBuilding)house).residents.add(newPerson);
 			((OfficeBuilding)office).workers.add(newPerson);
@@ -227,8 +227,8 @@ public class Map {
 	}
 	
 	
-	public void spreadDisease() {
-		for (Building b : offices) {
+	public void spreadDisease(List<Building> buildings) {
+		for (Building b : buildings) {
 			List<Person> people_in_building = new ArrayList<>(b.persons);
 			//System.out.println(temp.size());
 			for(int spreader=0;spreader<people_in_building.size();spreader++) {
@@ -239,23 +239,12 @@ public class Map {
 				}
 			}
 		}
-		for (Building b : public_places) {
-			List<Person> temp = new ArrayList<>(b.persons);
-			//System.out.println(temp.size());
-			for(int i=0;i<temp.size();i++) {
-				if (!temp.get(i).isInfected || temp.get(i).state==State.MOVING) continue;
-				for(int j=0;j<temp.size();j++) {
-					if(i==j || temp.get(j).isInfected || temp.get(j).state==State.MOVING) continue;
-					temp.get(j).tryToInfect(temp.get(i));
-				}
-			}
-		}
 	}
 	
 	
 	public void enforceQuarantine() {
 		for(Person p:persons) {
-			if (p.isTestedInfected && !p.isImmune && !p.isQuarantined) {
+			if (!p.isDead && p.isTestedInfected && !p.isImmune && !p.isQuarantined) {
 				Map.totalQuarantined++;
 				p.isQuarantined=true;
 			}

@@ -5,32 +5,34 @@ import model.Person.State;
 public class MoveTask extends Task {
 	
 	Location destination;
+	int xDir=1;
+	int yDir=1;
 
 	public MoveTask(Person person,Location destination) {
 		super(person);
 		this.destination = destination;
-	}
-	
-	public boolean run() {
+		xDir = (int)Math.signum(destination.x-person.x);
+		yDir = (int)Math.signum(destination.y-person.y);
 		person.state = State.MOVING;
 		Location oldLocation = Map.grid[person.x][person.y];
 		oldLocation.persons.remove(person);
-		if(oldLocation.building!=null) oldLocation.building.persons.remove(person);
+		oldLocation.building.persons.remove(person);
+		person.currentLocation=null;
+	}
+	
+	public boolean run() {
 		if(person.x != destination.x) {
-			person.x+=Math.signum(destination.x-person.x);
+			person.x+=xDir;
 		}
 		if(person.y != destination.y) {
-			person.y+=Math.signum(destination.y-person.y);
+			person.y+=yDir;
 		}
-		Location newLocation = Map.grid[person.x][person.y];
-		newLocation.persons.add(person);
-		if(newLocation.building!=null) {
-			newLocation.building.persons.add(person);
-			//System.out.println(newLocation.building.persons.size());
-		}
-		person.currentLocation = newLocation;
 		if(person.x==destination.x && person.y == destination.y) {
 			person.state = State.WORKING;
+			Location newLocation = Map.grid[person.x][person.y];
+			newLocation.persons.add(person);
+			newLocation.building.persons.add(person);
+			person.currentLocation = newLocation;
 			return true;
 		}
 		else return false;

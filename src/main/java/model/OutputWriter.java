@@ -26,7 +26,7 @@ public class OutputWriter {
 		}
 		try {
 			simWriter = new FileWriter(path+"sim_data.csv",true);
-			simWriter.write("tick,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests\n");
+			simWriter.write("tick,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests,maskEnforcement,lockdownOnTest,officeLockdown,publicLockdown,publicEvent,quarantine,contactTrace,socialDistancing\n");
 			infectionWriter = new FileWriter(path+"infection_data.csv",true);
 			infectionWriter.write("tick,victim_age,victim_immunity,infection_location,was_symptomatic,was_tested_positive\n");
 			deathWriter = new FileWriter(path+"death_data.csv",true);
@@ -38,7 +38,24 @@ public class OutputWriter {
 	
 	public static void writeSimData() {
 		try {
-			simWriter.write(Simulator.simTicks+","+Map.totalInfected+","+Map.totalActiveInfected+","+Map.totalDead+","+Map.totalImmune+","+Map.totalQuarantined+","+Map.totalTests+","+Map.totalPositiveTests+"\n");
+			simWriter.write(
+					Simulator.simTicks
+					+","+Map.totalInfected
+					+","+Map.totalActiveInfected
+					+","+Map.totalDead
+					+","+Map.totalImmune
+					+","+Map.totalQuarantined
+					+","+Map.totalTests
+					+","+Map.totalPositiveTests
+					+","+simulationConfig.maskEnforcement
+					+","+simulationConfig.lockdownOnTest
+					+","+simulationConfig.officeLockdown
+					+","+simulationConfig.publicLockdown
+					+","+(simulationConfig.publicEventBuilding==null?"false":"true")
+					+","+simulationConfig.quarantineOnTest
+					+","+simulationConfig.contactTracing
+					+","+simulationConfig.socialDistancing
+					+"\n");
 		} catch (IOException | NullPointerException e) {
 			e.printStackTrace();
 		}
@@ -46,7 +63,13 @@ public class OutputWriter {
 	
 	public static void writeInfectionData(int age, double immunity,String location,boolean wasSymptomatic, boolean wasTestedPositive) {
 		try {
-			infectionWriter.write(Simulator.simTicks+","+age+","+immunity+","+location+","+wasSymptomatic+","+wasTestedPositive+"\n");
+			infectionWriter.write(Simulator.simTicks
+					+","+age
+					+","+immunity
+					+","+location
+					+","+wasSymptomatic
+					+","+wasTestedPositive
+					+"\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -54,7 +77,11 @@ public class OutputWriter {
 	
 	public static void writeDeathData(int age,double chanceToDie, boolean wasTestedPositive) {
 		try {
-			deathWriter.write(Simulator.simTicks+","+age+","+chanceToDie+","+wasTestedPositive+"\n");
+			deathWriter.write(Simulator.simTicks
+					+","+age
+					+","+chanceToDie
+					+","+wasTestedPositive
+					+"\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

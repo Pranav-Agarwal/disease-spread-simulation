@@ -28,9 +28,9 @@ public class OutputWriter {
 			simWriter = new FileWriter(path+"sim_data.csv",true);
 			simWriter.write("tick,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests,maskEnforcement,lockdownOnTest,officeLockdown,publicLockdown,publicEvent,quarantine,contactTrace,socialDistancing\n");
 			infectionWriter = new FileWriter(path+"infection_data.csv",true);
-			infectionWriter.write("tick,victim_age,victim_immunity,infection_location,was_symptomatic,was_tested_positive\n");
+			infectionWriter.write("tick,victim_id,victim_age,victim_immunity,spreader_id,infection_building_id,infection_building,was_symptomatic,was_tested_positive\n");
 			deathWriter = new FileWriter(path+"death_data.csv",true);
-			deathWriter.write("tick,victim_age,victim_chance_to_die,was_tested_positive\n");
+			deathWriter.write("tick,victim_id,victim_age,victim_chance_to_die,was_tested_positive\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -61,12 +61,15 @@ public class OutputWriter {
 		}
 	}
 	
-	public static void writeInfectionData(int age, double immunity,String location,boolean wasSymptomatic, boolean wasTestedPositive) {
+	public static void writeInfectionData(int victimId,int age, double immunity,int spreaderId,int buildingId,String buildingType,boolean wasSymptomatic, boolean wasTestedPositive) {
 		try {
 			infectionWriter.write(Simulator.simTicks
+					+","+victimId
 					+","+age
 					+","+immunity
-					+","+location
+					+","+spreaderId
+					+","+buildingId
+					+","+buildingType
 					+","+wasSymptomatic
 					+","+wasTestedPositive
 					+"\n");
@@ -75,9 +78,10 @@ public class OutputWriter {
 		}
 	}
 	
-	public static void writeDeathData(int age,double chanceToDie, boolean wasTestedPositive) {
+	public static void writeDeathData(int id,int age,double chanceToDie, boolean wasTestedPositive) {
 		try {
 			deathWriter.write(Simulator.simTicks
+					+","+id
 					+","+age
 					+","+chanceToDie
 					+","+wasTestedPositive

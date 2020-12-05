@@ -7,7 +7,7 @@ import java.util.Queue;
 import java.util.Random;
 
 public class Person {
-
+	private static int counter=0;
 	public static enum State {WORKING, MOVING, IDLE};
 	Virus v1 =new Virus(simulationConfig.virusType);
 	Boolean isInfected=false;
@@ -16,7 +16,9 @@ public class Person {
 	Boolean isDead=false;
 	Boolean isQuarantined=false;
 	Boolean isSymptomatic=false;
-	String infection_location="seed";
+	String infectionBuildingType;
+	public int infectionBuildingId;
+	public int id;
 	
 	int age=0;
 	double immunityStrength=0.0;
@@ -25,6 +27,7 @@ public class Person {
 	int ticksSinceTested = simulationConfig.testCooldown;
 	int peopleInfected = 0;
 	Location currentLocation;
+	int spreaderId=-1;
 	int x;
 	int y;
 	Location home;
@@ -39,6 +42,7 @@ public class Person {
 	double chanceToVisitPublic;
 	
 	public Person(Location home, Location workplace) {
+		this.id = counter++;
 		this.home = home;
 		this.workplace = workplace;
 
@@ -58,7 +62,7 @@ public class Person {
 			ticksSinceInfected++;
 			if (ticksSinceInfected>v1.infectionPeriod) {
 				Map.totalActiveInfected--;
-				if(chanceToKill>0.5) killPerson();
+				if(chanceToKill>0.5 && isSymptomatic) killPerson();
 				else {
 					isInfected=false;
 					isImmune=true;
@@ -71,7 +75,7 @@ public class Person {
 					isSymptomatic = true;
 					if(!isTestedInfected) takeTest();
 				}
-				OutputWriter.writeInfectionData(age, immunityStrength, infection_location,isSymptomatic,isTestedInfected);
+				OutputWriter.writeInfectionData(id,age, immunityStrength,spreaderId,infectionBuildingId, infectionBuildingType,isSymptomatic,isTestedInfected);
 			}
 		}
 		if(isQuarantined) {
@@ -126,7 +130,11 @@ public class Person {
 			Map.totalInfected++;
 			Map.totalActiveInfected++;
 			spreader.peopleInfected++;
-			if(infection_location=="seed") infection_location=currentLocation.building.getClass().getSimpleName();
+			if(infectionBuildingType=="seed") {
+				infectionBuildingType=currentLocation.building.getClass().getSimpleName();
+				infectionBuildingId = currentLocation.building.id;
+			}
+			if(spreaderId==-1)spreaderId = spreader.id;
 		}
 		
 	}
@@ -179,7 +187,7 @@ public class Person {
 			isQuarantined=false;
 			Map.totalQuarantined--;
 		}
-		OutputWriter.writeDeathData(age, chanceToKill, isTestedInfected);
+		OutputWriter.writeDeathData(id,age, chanceToKill, isTestedInfected);
 	}
 
 	private int getAge() {

@@ -7,12 +7,15 @@ import java.util.Random;
 import java.util.Set;
 
 public abstract class Building {
+	static int counter = 0;
+	int id;
 	List<Location> locations;
 	Set<Person> persons;
 	Boolean isLockdown;
 	int timeSinceLockdown = 0;
 	
 	public Building(List<Location> locations) {
+		this.id = counter++;
 		this.locations = locations;
 		this.persons = new HashSet<>();
 		this.isLockdown = false;

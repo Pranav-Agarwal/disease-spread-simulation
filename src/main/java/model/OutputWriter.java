@@ -17,7 +17,7 @@ public class OutputWriter {
 	
 	public OutputWriter() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MM_yyyy HH-mm-ss");
-		path = "output/Sim_data "+LocalDateTime.now().format(formatter)+"/";
+		path = "output/Sim_data "+LocalDateTime.now().format(formatter)+"-"+simulationConfig.virusType+"/";
 		try {
 			new File("output").mkdir();
 			new File(path).mkdir();

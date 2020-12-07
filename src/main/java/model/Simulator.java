@@ -37,17 +37,21 @@ public class Simulator extends TimerTask{
 			if(actualTicks%speed==0) {
 				simTicks++;
 				Map.instance.update();
+				
 				if(simulationConfig.showGUI) canvas.repaint();
 				OutputWriter.writeSimData();
+				if(simTicks%100==0) {
+					Map.updateChart();}
+			
 				if(actualTicks%10==0) {
-					Map.updateChart();
+					//Map.updateChart();
 					Map.instance.spreadDisease(Map.offices);
 					Map.instance.spreadDisease(Map.public_places);
-				}
+					
 				//if(simTicks>500) map.lockdownBuildings(Map.offices);
 				//if(simTicks>700) map.lockdownBuildings(Map.public_places);
 				//if(simTicks>500) map.enforceQuarantine();
-				
+				}
 			}
 		}
 	}

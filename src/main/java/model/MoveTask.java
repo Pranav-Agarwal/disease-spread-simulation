@@ -2,11 +2,12 @@ package model;
 
 import model.Person.State;
 
+//represents a task to move a person from current location to a defined destination. moves one square per tick
 public class MoveTask extends Task {
 	
-	Location destination;
-	int xDir=1;
-	int yDir=1;
+	private Location destination;
+	private int xDir=1;
+	private int yDir=1;
 
 	public MoveTask(Person person,Location destination) {
 		super(person);
@@ -20,6 +21,7 @@ public class MoveTask extends Task {
 		person.currentLocation=null;
 	}
 	
+	//this task will keep executing until destination is reached
 	public boolean run() {
 		if(person.x != destination.x) {
 			person.x+=xDir;

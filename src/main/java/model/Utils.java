@@ -1,5 +1,6 @@
 package model;
 
+//contains static methods used in the program
 public class Utils {
 	
 	public static int getDistance(Building b1,Building b2) {

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
+//Class that reads and stores properties from the config file
 public class simulationConfig {
 	
 	private static Properties prop;
@@ -88,16 +89,16 @@ public class simulationConfig {
 		socialDistancing_radius=Double.parseDouble(prop.getProperty("socialDistancing_radius"));
 		
 		//Virus config
-		if (virusType.equals("influenza"))
+		if (virusType.equals("Influenza"))
 			{infectionPeriod = Integer.parseInt(prop.getProperty("INFinfectionPeriod"));
-			quarantinePeriod = Integer.parseInt(prop.getProperty("INFquarantinePeriod"));
+			quarantinePeriod = infectionPeriod;
 			incubationPeriod = Integer.parseInt(prop.getProperty("INFincubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("INFchanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("INFlethality"));
 			infectivity=Double.parseDouble(prop.getProperty("INFinfectivity"));}
-		else if (virusType.equals("covid1")) {
+		else if (virusType.equals("COV1")) {
 			infectionPeriod = Integer.parseInt(prop.getProperty("COV1infectionPeriod"));
-			quarantinePeriod = Integer.parseInt(prop.getProperty("COV1quarantinePeriod"));
+			quarantinePeriod = infectionPeriod;
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV1incubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV1chanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("COV1lethality"));
@@ -105,7 +106,7 @@ public class simulationConfig {
 		}
 		else {
 			infectionPeriod = Integer.parseInt(prop.getProperty("COV2infectionPeriod"));
-			quarantinePeriod = Integer.parseInt(prop.getProperty("COV2quarantinePeriod"));
+			quarantinePeriod = infectionPeriod;
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV2incubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV2chanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("COV2lethality"));

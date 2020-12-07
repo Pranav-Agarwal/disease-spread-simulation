@@ -1,18 +1,17 @@
 package model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.Logger;
 
+//Class that takes the map state and outputs it to csv files
 public class OutputWriter {
 	
-	public static FileWriter simWriter;
-	public static FileWriter infectionWriter;
-	public static FileWriter deathWriter;
+	private static FileWriter simWriter;
+	private static FileWriter infectionWriter;
+	private static FileWriter deathWriter;
 	public static String path;
 	
 	public OutputWriter() {

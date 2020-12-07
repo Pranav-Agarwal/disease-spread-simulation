@@ -1,20 +1,20 @@
 package model;
 
-import java.util.ArrayList;
+
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
+//represents a grid quare on the map
 public class Location {
 	
 	public static enum Type {HOUSE,WORK,PUBLIC,EMPTY};
 	
-	int x;
-	int y;
-	Type type;
-	Building building;
+	public int x;
+	public int y;
+	public Type type;
+	public Building building; //which building is this location a part of
 	
-	Set<Person> persons;
+	public Set<Person> persons; //which people are currently in this location
 	
 	public Location(int x,int y) {
 		this.x = x;

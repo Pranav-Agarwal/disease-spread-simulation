@@ -1,13 +1,6 @@
 package model;
 
-import java.io.Externalizable;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -47,7 +40,6 @@ public class Map {
 	
 	public static void addChartValue(LinkedList<Integer> Data, Integer value)
 	{
-		//System.out.println(Data+ " "+ value );
 		Data.add(value);
 	}
 	
@@ -98,6 +90,7 @@ public class Map {
 		
 	}
 	
+	//infects a few random people
 	public void seedVirus(int count) {
 		int counter=0;
 		for(Person p : persons) {		
@@ -109,6 +102,7 @@ public class Map {
 		Map.totalInfected = count;
 	}
 	
+	//seeds public spaces
 	public void seedBuilding(Type type, int count, double minSize, double maxSize) {
 		int tries = 0;
 		Random random = new Random();
@@ -130,6 +124,7 @@ public class Map {
 		}
 	}
 	
+	//seeds offices and houses
 	public void seedBuilding(Type type, int count, int buildingSize, int sizeVariation) {
 		int tries = 0;
 		Random random = new Random();
@@ -160,9 +155,7 @@ public class Map {
 
 	}
 	
-	/**
-	 * recursively spread office space from a 'seed' cell to create a larger, more realistic space
-	 */
+	//recursively spread a building from a 'seed' cell to create a larger, more realistic and jagged space
 	private void spreadBuilding(Building building, List<Location> locations,double spreadChance,int row,int col,Type type,double spreadMin, double spreadMax ) {
 		/* checks if cell already has land, or is at edges, or spread chance is too low */
 		Location tempLocation = grid[row][col];
@@ -181,6 +174,7 @@ public class Map {
 		spreadBuilding(building, locations, spreadChance*(Math.random()*(spreadMax-spreadMin)+spreadMin),row,col-1,type,spreadMin,spreadMax);
 	}
 	
+	//spreads a rectangular building
 	private void spreadBuilding(Building building, List<Location> locations, int buildingSize, int sizeVariation, int row, int col, Type type) {
 		double width = Math.random()*(sizeVariation*2)+(buildingSize-sizeVariation);
 		double height = Math.random()*(sizeVariation*2)+(buildingSize-sizeVariation);
@@ -230,7 +224,6 @@ public class Map {
 	public void spreadDisease(List<Building> buildings) {
 		for (Building b : buildings) {
 			List<Person> people_in_building = new ArrayList<>(b.persons);
-			//System.out.println(temp.size());
 			for(int spreader=0;spreader<people_in_building.size();spreader++) {
 				if (!people_in_building.get(spreader).isInfected || people_in_building.get(spreader).state==State.MOVING) continue;
 				for(int victim=0;victim<people_in_building.size();victim++) {
@@ -249,14 +242,6 @@ public class Map {
 				p.isQuarantined=true;
 			}
 		}
-	}
-	
-	public void updateRNought() {
-		double t = 0.0;
-		for (Person p : persons) {
-			t+=p.peopleInfected;
-		}
-		rNought = t/persons.size();
 	}
 	
 }

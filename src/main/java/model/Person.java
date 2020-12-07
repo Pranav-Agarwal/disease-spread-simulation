@@ -1,63 +1,67 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 
+//represents a person on the map
 public class Person {
-	private static int counter=0;
+	
+	private static int counter=0; //used to assign a unique ID
 	public static enum State {WORKING, MOVING, IDLE};
-	Virus v1 =new Virus(simulationConfig.virusType);
-	Boolean isInfected=false;
-	Boolean isTestedInfected=false;
-	Boolean isImmune=false;
-	Boolean isDead=false;
-	Boolean isQuarantined=false;
-	Boolean isSymptomatic=false;
-	String infectionBuildingType;
-	public int infectionBuildingId;
-	public int id;
 	
-	int age=0;
-	double immunityStrength=0.0;
-	double chanceToCatchInfection=0.0;
-	int ticksSinceInfected=0;
-	int ticksSinceQuarantined=0;
-	int ticksSinceTested = simulationConfig.testCooldown;
-	int peopleInfected = 0;
-	Location currentLocation;
-	int spreaderId=-1;
-	int x;
-	int y;
-	Location home;
-	Location workplace;
-	State state=State.IDLE;
-	Queue<Task> tasks = new LinkedList<>();
+	//infection state variables
+	public Boolean isInfected=false;
+	public Boolean isTestedInfected=false;
+	public Boolean isImmune=false;
+	public Boolean isDead=false;
+	public Boolean isQuarantined=false;
+	public Boolean isSymptomatic=false;
+	private String infectionBuildingType="seed";
+	private int infectionBuildingId;
+	private int spreaderId=-1;
 	
-	//config parameters
-
+	//location state variables
+	public Location currentLocation;
+	public int x;
+	public int y;
+	public Location home;
+	public Location workplace;
+	public State state=State.IDLE;
 	
-	double chanceToKill;
-	double chanceToVisitPublic;
+	//property variables
+	private Virus v1;
+	private int id;
+	private int age=0;
+	private double immunityStrength=0.0;
+	private double chanceToCatchInfection=0.0;
+	private int ticksSinceInfected=0;
+	private int ticksSinceQuarantined=0;
+	private int ticksSinceTested = simulationConfig.testCooldown;
+	private Queue<Task> tasks = new LinkedList<>();
+	
+	//config parameters from file
+	private double chanceToKill;
+	private double chanceToVisitPublic;
 	
 	public Person(Location home, Location workplace) {
-		this.id = counter++;
 		this.home = home;
 		this.workplace = workplace;
-
-		this.age= getAge();				// allotting age based on normal distribution pattern
-		this.immunityStrength=getImmunityStrength();
-		if (Math.random()<0.5) this.currentLocation = home;
-		else this.currentLocation = workplace;
-		this.x = currentLocation.x;
-		this.y = currentLocation.y;
-		this.chanceToKill= chanceToKill();
+		
+		id = counter++;
+		v1 = new Virus();
+		age= getAge();				// allotting age based on normal distribution pattern
+		immunityStrength=getImmunityStrength();
+		if (Math.random()<0.5) currentLocation = home;
+		else currentLocation = workplace;
+		x = currentLocation.x;
+		y = currentLocation.y;
+		chanceToKill= chanceToKill();
 		chanceToVisitPublic=simulationConfig.chanceToVisitPublic;
-		this.chanceToCatchInfection=this.immunityStrength-v1.infectivity;
+		chanceToCatchInfection=immunityStrength-v1.infectivity;
 	}
 	
+	//called every simulation tick
 	public void update() {
 		ticksSinceTested++;
 		if(isInfected) {
@@ -85,7 +89,7 @@ public class Person {
 			if(currentLocation!=home && tasks.isEmpty()) {
 				tasks.add(new MoveTask(this,home));
 			}
-			if (ticksSinceQuarantined>v1.quarantinePeriod) {
+			if (ticksSinceQuarantined>simulationConfig.quarantinePeriod) {
 				isQuarantined=false;
 				Map.totalQuarantined--;
 			}
@@ -100,7 +104,8 @@ public class Person {
 				}			
 				
 			}
-			else if(currentLocation == home && !workplace.building.isLockdown && (!simulationConfig.limitedReOpening || ((double)workplace.building.getCurrentOccupancy())/((OfficeBuilding)workplace.building).workers.size()<simulationConfig.limitedOccupancyPercentage)){  
+			else if(currentLocation == home && !workplace.building.isLockdown && (!simulationConfig.limitedReOpening || 
+					((double)workplace.building.getCurrentOccupancy())/((OfficeBuilding)workplace.building).workers.size()<simulationConfig.limitedOccupancyPercentage)){  
 				tasks.add(new MoveTask(this,workplace));
 				tasks.add(new WorkTask(this,simulationConfig.timeSpentInOffice*(0.8+Math.random()*0.4))); //Random +- 20%
 			}	
@@ -112,28 +117,18 @@ public class Person {
 		if(!tasks.isEmpty() && tasks.peek().run()) tasks.remove();		
 		
 	}
-	//masks
-	//social distancing
-	//person's immune strtngh
-	// virus infectivity - add this to config
-	
-	//+0.2 , 0
-	//+0.2 , 0
-	//+0,4 , 0
-	//+0.4 , 0
 	
 	public void tryToInfect(Person spreader) {
 		if (this.isImmune) return;
 			double dist = Utils.getDistance(this,spreader);
 			if (simulationConfig.socialDistancing==false || ( simulationConfig.socialDistancing==true && dist <simulationConfig.socialDistancing_radius))
-				{this.chanceToCatchInfection = this.chanceToCatchInfection-0.2;}
+				chanceToCatchInfection = chanceToCatchInfection-0.2;
 			if (simulationConfig.maskEnforcement ==true)
-				{this.chanceToCatchInfection = this.chanceToCatchInfection+0.2;}		
-			if(this.chanceToCatchInfection <= 0.5){   // inverse as we are subtracting infectivty
-			this.isInfected=true;
+				chanceToCatchInfection = chanceToCatchInfection+0.2;
+			if(chanceToCatchInfection <= 0.5){   // inverse as we are subtracting infectivty
+			isInfected=true;
 			Map.totalInfected++;
 			Map.totalActiveInfected++;
-			spreader.peopleInfected++;
 			if(infectionBuildingType=="seed") {
 				infectionBuildingType=currentLocation.building.getClass().getSimpleName();
 				infectionBuildingId = currentLocation.building.id;
@@ -159,7 +154,7 @@ public class Person {
 	private void takeTest() {
 		ticksSinceTested = 0;
 		Map.totalTests++;
-		if(isInfected && Math.random()<0.8) {
+		if(isInfected && Math.random()<0.8) {  //assumed chance of false negative is 20%
 			isTestedInfected = true;
 			Map.totalPositiveTests++;
 			if(simulationConfig.lockdownOnTest) workplace.building.isLockdown=true;
@@ -207,9 +202,6 @@ public class Person {
 		else return random.nextDouble();
 	}
 	
-	//persons immune strength
-	//persons age
-	//virus lethality
 	private double chanceToKill()
 	{
 		return this.immunityStrength - v1.lethality; 

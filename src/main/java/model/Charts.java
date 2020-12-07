@@ -1,7 +1,5 @@
 package model;
 
-
-
 import java.io.IOException;
 import javax.swing.JPanel;
 
@@ -14,10 +12,7 @@ import org.knowm.xchart.XChartPanel;
 import org.knowm.xchart.XYChart;
 import org.knowm.xchart.XYChartBuilder;
 
-
-
-
-
+//Class for the real time graph. Graphs deaths, total infections and active infections
 public class Charts {
 
 	 public SwingWrapper<XYChart> sw;
@@ -30,11 +25,10 @@ public class Charts {
 			Map.yData_totalInfected.add(Map.totalInfected);
 			Map.yData_totalActiveInfected.add(Map.totalActiveInfected);
 			Map.yData_totalDied.add(Map.totalDead);
-		 //   System.out.print("Chart initialised!");
 			this.chart = new XYChartBuilder().width(1200).height(600).title("Virus outbreak simulation").xAxisTitle("Time (Days)").yAxisTitle("Number of people(in thousands)").build();
-			chart.addSeries("totalInfectedSeries", Map.xData, Map.yData_totalInfected);
-			chart.addSeries("totalActiveInfectedSeries", Map.xData, Map.yData_totalActiveInfected);
-			chart.addSeries("totalDiedSeries", Map.xData, Map.yData_totalDied);
+			chart.addSeries("Total Infected", Map.xData, Map.yData_totalInfected);
+			chart.addSeries("Active Infected", Map.xData, Map.yData_totalActiveInfected);
+			chart.addSeries("Total Deaths", Map.xData, Map.yData_totalDied);
 			this.sw=new SwingWrapper<>(chart);
 			sw.displayChart();
 			this.chartPanel = new XChartPanel<XYChart>(chart);  
@@ -42,9 +36,9 @@ public class Charts {
 		  
 	  
 	public void realTimeupdates() {
-	    chart.updateXYSeries("totalInfectedSeries", Map.xData, Map.yData_totalInfected, null);
-	    chart.updateXYSeries("totalActiveInfectedSeries", Map.xData, Map.yData_totalActiveInfected, null);
-	    chart.updateXYSeries("totalDiedSeries", Map.xData, Map.yData_totalDied, null);
+	    chart.updateXYSeries("Total Infected", Map.xData, Map.yData_totalInfected, null);
+	    chart.updateXYSeries("Active Infected", Map.xData, Map.yData_totalActiveInfected, null);
+	    chart.updateXYSeries("Total Deaths", Map.xData, Map.yData_totalDied, null);
 		
 	    sw.repaintChart();
 	}

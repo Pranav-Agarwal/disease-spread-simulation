@@ -1,20 +1,14 @@
 package model;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import model.Location.Type;
 
+//Class that defines the GUI visualization of the simulation
+@SuppressWarnings("serial")
 public class GUICanvas extends JPanel{
 	
 	private static int size;
@@ -23,6 +17,8 @@ public class GUICanvas extends JPanel{
 		size = simulationConfig.size;
 		this.setPreferredSize(new Dimension(size*3, size*3));
 	}
+	
+	//called every repaint
     public void paintComponent(Graphics g) {
     	super.paintComponent(g);
     	for(int i=0;i<Map.size;i++) {
@@ -57,13 +53,14 @@ public class GUICanvas extends JPanel{
     	}
     }
     
-
+    //defines how a person will look
 	public void drawPerson(Graphics g,int x,int y,int width,int height) {
 	    g.fillOval(x, y, width, height);
 	    g.setColor(new Color(0,0,0));
 	    g.drawOval(x, y, width, height);
 	}
 	
+	//defines how a location square will look
 	public void drawLocation(Graphics g,int x,int y,int width,int height, int[] borders) {
 		g.fillRect(x, y, width, height);
 		g.setColor(new Color(0,0,0));

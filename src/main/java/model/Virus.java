@@ -1,41 +1,23 @@
 package model;
 
-
+//represents a virus that will be released in the population to model spread
 public class Virus { 
 	
-	//config parameters
-	
-	String virusType;
-	int infectionPeriod;
-	int quarantinePeriod;
-	int incubationPeriod;
-	double chanceToGetSymptoms;
-	double lethality;
-	double infectivity;
-	//to be calculated
-	int k;
-	int r;
-	
-	
-	
-	public Virus(String virusType){
-			this.virusType=simulationConfig.virusType;
-		    this.infectionPeriod=simulationConfig.infectionPeriod;
-			this.quarantinePeriod=simulationConfig.quarantinePeriod;
-			this.incubationPeriod=simulationConfig.incubationPeriod;
-			this.chanceToGetSymptoms=simulationConfig.chanceToGetSymptoms;
-			this.lethality=simulationConfig.lethality;
-			this.infectivity=simulationConfig.infectivity;
-			}
+	//config parameters taken from config file
+	public String virusType;
+	public int infectionPeriod;
+	public int incubationPeriod;
+	public double chanceToGetSymptoms;
+	public double lethality;
+	public double infectivity;
 		
-
-	public void k()
-	{}
-	
-	
-	public void r()
-	{}
-	
-	
+	public Virus(){
+		virusType=simulationConfig.virusType;
+	    infectionPeriod=simulationConfig.infectionPeriod;
+		incubationPeriod=simulationConfig.incubationPeriod;
+		chanceToGetSymptoms=simulationConfig.chanceToGetSymptoms;
+		lethality=simulationConfig.lethality;
+		infectivity=simulationConfig.infectivity;
+	}
 	
 }

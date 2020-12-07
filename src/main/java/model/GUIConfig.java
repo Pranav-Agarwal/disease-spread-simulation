@@ -1,19 +1,10 @@
 package model;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
-import java.util.logging.Logger;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -28,14 +19,12 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JToggleButton;
 import java.awt.Font;
 
+//Class that contains the configuration GUI objects and their interaction code with the simulation
 public class GUIConfig{
 
-	protected JFrame frame;                          //top level container of the app
-	protected HashMap<String,Component> components;  //HashMap of components that provides an easy interface to take input from them	
+	protected JFrame frame;
 	
 	public GUIConfig() {
-		
-		components = new HashMap<String,Component>();
 		initGUI();
 		showUI();
 	}	
@@ -58,12 +47,12 @@ public class GUIConfig{
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setTitle("Configuration");
-		frame.setSize(new Dimension(300, 650));
+		frame.setSize(new Dimension(320, 650));
 		frame.getContentPane().setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JComboBox<String> virusDropdown = new JComboBox<>();
-		virusDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"influenza", "covid1", "covid2"}));
+		virusDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"Influenza", "COV1", "COV2"}));
 		virusDropdown.setSelectedIndex(0);
 		virusDropdown.setBounds(120, 28, 146, 22);
 		frame.getContentPane().add(virusDropdown);
@@ -107,7 +96,6 @@ public class GUIConfig{
 	      }
 		});
 		speedPanel.add(speedSlider);
-		components.put("speedSlider", speedSlider);
 		
 		
 		JToggleButton exitToggleButton = new JToggleButton("Save data and Exit");

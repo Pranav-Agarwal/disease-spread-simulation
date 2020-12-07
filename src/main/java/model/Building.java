@@ -1,24 +1,24 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 public abstract class Building {
-	static int counter = 0;
-	int id;
-	List<Location> locations;
-	Set<Person> persons;
-	Boolean isLockdown;
-	int timeSinceLockdown = 0;
+	private static int counter = 0;
+	public int id;
+	public List<Location> locations;  //grid squares that are a part of this building
+	public Set<Person> persons;  //people currently in this building. Set is used for constant time add and remove of people
+	public Boolean isLockdown;
+	public int timeSinceLockdown = 0;
 	
+	//represents a set of locations squares with a boundary, to simulate a building
 	public Building(List<Location> locations) {
-		this.id = counter++;
+		id = counter++;  //assign a unique ID on initialization
 		this.locations = locations;
-		this.persons = new HashSet<>();
-		this.isLockdown = false;
+		persons = new HashSet<>();
+		isLockdown = false;
 	}
 	
 	public int getCurrentOccupancy()
@@ -26,6 +26,7 @@ public abstract class Building {
 		return persons.size();
 	}
 	
+	//used to support the auto lockdown feature
 	public void update() {
 		if(isLockdown) timeSinceLockdown++;
 		if(simulationConfig.officeLockdown==false && timeSinceLockdown>simulationConfig.lockdownPeriod) {
@@ -33,6 +34,7 @@ public abstract class Building {
 		isLockdown=false;}
 	}
 	
+	//picks a random square in this building
 	public Location getRandomLocation() {
 		return locations.get(new Random().nextInt(locations.size()));
 	}

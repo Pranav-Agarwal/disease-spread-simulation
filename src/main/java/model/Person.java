@@ -17,6 +17,7 @@ public class Person {
 	public Boolean isDead=false;
 	public Boolean isQuarantined=false;
 	public Boolean isSymptomatic=false;
+	public Boolean hasBeenExposedThisTick = false;
 	private String infectionBuildingType="seed";
 	private int infectionBuildingId;
 	private int spreaderId=-1;
@@ -58,11 +59,12 @@ public class Person {
 		y = currentLocation.y;
 		chanceToKill= chanceToKill();
 		chanceToVisitPublic=simulationConfig.chanceToVisitPublic;
-		chanceToCatchInfection=immunityStrength-v1.infectivity;
+		chanceToCatchInfection=v1.infectivity-immunityStrength;
 	}
 	
 	//called every simulation tick
 	public void update() {
+		hasBeenExposedThisTick = false;
 		ticksSinceTested++;
 		if(isInfected) {
 			ticksSinceInfected++;
@@ -119,13 +121,15 @@ public class Person {
 	}
 	
 	public void tryToInfect(Person spreader) {
-		if (this.isImmune) return;
-			double dist = Utils.getDistance(this,spreader);
-			if (simulationConfig.socialDistancing==false || ( simulationConfig.socialDistancing==true && dist <simulationConfig.socialDistancing_radius))
-				chanceToCatchInfection = chanceToCatchInfection-0.2;
-			if (simulationConfig.maskEnforcement ==true)
-				chanceToCatchInfection = chanceToCatchInfection+0.2;
-			if(chanceToCatchInfection <= 0.5){   // inverse as we are subtracting infectivty
+		if (this.isImmune || hasBeenExposedThisTick) return;
+		hasBeenExposedThisTick = true;
+//			double dist = Utils.getDistance(this,spreader);
+//			if (simulationConfig.socialDistancing==false || ( simulationConfig.socialDistancing==true && dist <simulationConfig.socialDistancing_radius))
+//				chanceToCatchInfection +=0.2;
+//			if (simulationConfig.maskEnforcement ==true)
+//				chanceToCatchInfection -=0.2;
+			chanceToCatchInfection = Math.random();
+			if(chanceToCatchInfection <= 0.2){
 			isInfected=true;
 			Map.totalInfected++;
 			Map.totalActiveInfected++;

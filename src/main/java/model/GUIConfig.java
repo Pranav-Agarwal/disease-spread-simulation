@@ -47,7 +47,7 @@ public class GUIConfig{
 		frame = new JFrame();
 		frame.setResizable(false);
 		frame.setTitle("Configuration");
-		frame.setSize(new Dimension(320, 650));
+		frame.setSize(new Dimension(320, 670));
 		frame.getContentPane().setLayout(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

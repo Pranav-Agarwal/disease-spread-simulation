@@ -31,7 +31,8 @@ public abstract class Building {
 		if(isLockdown) timeSinceLockdown++;
 		if(simulationConfig.officeLockdown==false && timeSinceLockdown>simulationConfig.lockdownPeriod) {
 		timeSinceLockdown=0;
-		isLockdown=false;}
+		isLockdown=false;
+		}
 	}
 	
 	//picks a random square in this building

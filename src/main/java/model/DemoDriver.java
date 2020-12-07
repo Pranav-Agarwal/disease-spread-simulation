@@ -48,8 +48,6 @@ public class DemoDriver {
 	
 	//TODO - discuss infection model
 	//TODO - discuss time scaling
-	//TODO - add person ID
-	//TODO - add building ID
 	//TODO - add daily new infection counter
 
 

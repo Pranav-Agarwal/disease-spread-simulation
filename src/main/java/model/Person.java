@@ -110,6 +110,15 @@ public class Person {
 		if(!tasks.isEmpty() && tasks.peek().run()) tasks.remove();		
 		
 	}
+	//masks
+	//social distancing
+	//person's immune strtngh
+	// virus infectivity - add this to config
+	
+	//+0.2 , 0
+	//+0.2 , 0
+	//+0,4 , 0
+	//+0.4 , 0
 	
 	public void tryToInfect(Person spreader) {	// modify values based on efficacy
 		if (this.isImmune) return;
@@ -201,6 +210,9 @@ public class Person {
 		return random.nextDouble();
 	}
 	
+	//persons immune strength
+	//persons age
+	//virus lethality
 	private double chanceToKill()
 	{
 		if (this.age<15 || this.age> 60) {

@@ -22,6 +22,7 @@ public class Person {
 	
 	int age=0;
 	double immunityStrength=0.0;
+	double chanceToCatchInfection=0.0;
 	int ticksSinceInfected=0;
 	int ticksSinceQuarantined=0;
 	int ticksSinceTested = simulationConfig.testCooldown;
@@ -54,6 +55,7 @@ public class Person {
 		this.y = currentLocation.y;
 		this.chanceToKill= chanceToKill();
 		chanceToVisitPublic=simulationConfig.chanceToVisitPublic;
+		this.chanceToCatchInfection=this.immunityStrength-v1.infectivity;
 	}
 	
 	public void update() {
@@ -62,7 +64,7 @@ public class Person {
 			ticksSinceInfected++;
 			if (ticksSinceInfected>v1.infectionPeriod) {
 				Map.totalActiveInfected--;
-				if(chanceToKill>0.5 && isSymptomatic) killPerson();
+				if(chanceToKill<=0.3 && isSymptomatic) killPerson();  // inverse as we are subtracting lethality
 				else {
 					isInfected=false;
 					isImmune=true;
@@ -120,22 +122,15 @@ public class Person {
 	//+0,4 , 0
 	//+0.4 , 0
 	
-	public void tryToInfect(Person spreader) {	// modify values based on efficacy
+	public void tryToInfect(Person spreader) {
 		if (this.isImmune) return;
-		
-		if (simulationConfig.socialDistancing==true || simulationConfig.maskEnforcement ==true)
-		{
 			double dist = Utils.getDistance(this,spreader);
-			if (dist <simulationConfig.socialDistancing_radius)
-				{if (simulationConfig.maskEnforcement==false||simulationConfig.maskEnforcement==false)
-					{if (Math.random()<0.06) {this.isInfected=true;}}			
-				else {if (Math.random()<0.04) {this.isInfected=true;}}
-				}
-			else if (Math.random()<0.01) {this.isInfected=true;}
-		}
-		else {if (Math.random()<0.09) this.isInfected=true;} 
-		
-		if(this.isInfected==true){
+			if (simulationConfig.socialDistancing==false || ( simulationConfig.socialDistancing==true && dist <simulationConfig.socialDistancing_radius))
+				{this.chanceToCatchInfection = this.chanceToCatchInfection-0.2;}
+			if (simulationConfig.maskEnforcement ==true)
+				{this.chanceToCatchInfection = this.chanceToCatchInfection+0.2;}		
+			if(this.chanceToCatchInfection <= 0.5){   // inverse as we are subtracting infectivty
+			this.isInfected=true;
 			Map.totalInfected++;
 			Map.totalActiveInfected++;
 			spreader.peopleInfected++;
@@ -207,7 +202,9 @@ public class Person {
 	
 	private double getImmunityStrength() {
 		Random random = new Random();
-		return random.nextDouble();
+		if(this.age<15 || this.age >60)
+		{return random.nextDouble()-0.09;}  // reducing immunity for kids and older people
+		else return random.nextDouble();
 	}
 	
 	//persons immune strength
@@ -215,11 +212,7 @@ public class Person {
 	//virus lethality
 	private double chanceToKill()
 	{
-		if (this.age<15 || this.age> 60) {
-			return this.immunityStrength-2*v1.lethality ;
-		}
-		else 
-			return this.immunityStrength- v1.lethality;
+		return this.immunityStrength - v1.lethality; 
 	}
 
 }

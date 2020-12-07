@@ -58,6 +58,7 @@ public class simulationConfig {
 	public static int incubationPeriod = 500;
 	public static double lethality = 0.1;
 	public static double chanceToGetSymptoms=0.4;
+	public static double infectivity= 0.5;
 	
 	//GUI config
 	public static String houseColor="#f8fc03";
@@ -92,13 +93,15 @@ public class simulationConfig {
 			quarantinePeriod = Integer.parseInt(prop.getProperty("INFquarantinePeriod"));
 			incubationPeriod = Integer.parseInt(prop.getProperty("INFincubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("INFchanceToGetSymptoms"));
-			lethality = Double.parseDouble(prop.getProperty("INFlethality"));}
+			lethality = Double.parseDouble(prop.getProperty("INFlethality"));
+			infectivity=Double.parseDouble(prop.getProperty("INFinfectivity"));}
 		else if (virusType.equals("covid1")) {
 			infectionPeriod = Integer.parseInt(prop.getProperty("COV1infectionPeriod"));
 			quarantinePeriod = Integer.parseInt(prop.getProperty("COV1quarantinePeriod"));
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV1incubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV1chanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("COV1lethality"));
+			infectivity=Double.parseDouble(prop.getProperty("COV1infectivity"));
 		}
 		else {
 			infectionPeriod = Integer.parseInt(prop.getProperty("COV2infectionPeriod"));
@@ -106,6 +109,7 @@ public class simulationConfig {
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV2incubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV2chanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("COV2lethality"));
+			infectivity=Double.parseDouble(prop.getProperty("COV2infectivity"));
 		}
 		
 		//Map config

@@ -52,7 +52,7 @@ public class Map {
 	}
 	
 	public static void updateChart() {
-		addChartValue(xData,Simulator.simTicks);
+		addChartValue(xData,(Simulator.simTicks/100));
 		addChartValue(yData_totalInfected, Map.totalInfected);
 		addChartValue(yData_totalActiveInfected, Map.totalActiveInfected);
 		addChartValue(yData_totalDied, Map.totalDead);

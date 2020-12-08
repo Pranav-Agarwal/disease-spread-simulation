@@ -37,7 +37,9 @@ public abstract class Building {
 	
 	//picks a random square in this building
 	public Location getRandomLocation() {
-		return locations.get(new Random().nextInt(locations.size()));
+		Random random = new Random();
+		if(simulationConfig.testMode) random.setSeed(420);
+		return locations.get(random.nextInt(locations.size()));
 	}
 	
 	

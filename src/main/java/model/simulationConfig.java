@@ -51,7 +51,8 @@ public class simulationConfig {
 	public static int officeSize = 13;
 	public static int officeSizeVariation=3;
 	public static double publicMinSize=0.9;
-	public static double publicMaxSize=0.95;	
+	public static double publicMaxSize=0.95;
+	public static double publicEventPopularity=0.5; //TODO
 
 	//Virus config
 	public static int infectionPeriod = 1500;

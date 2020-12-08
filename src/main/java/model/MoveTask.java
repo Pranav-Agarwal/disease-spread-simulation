@@ -5,7 +5,7 @@ import model.Person.State;
 //represents a task to move a person from current location to a defined destination. moves one square per tick
 public class MoveTask extends Task {
 	
-	private Location destination;
+	public Location destination;
 	private int[] dir;
 
 	public MoveTask(Person person,Location destination) {

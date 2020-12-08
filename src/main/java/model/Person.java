@@ -18,7 +18,7 @@ public class Person {
 	public Boolean isQuarantined=false;
 	public Boolean isSymptomatic=false;
 	public Boolean hasBeenExposedThisTick = false;
-	private String infectionBuildingType="seed";
+	public String infectionBuildingType="seed";
 	private int infectionBuildingId;
 	private int spreaderId=-1;
 	
@@ -31,17 +31,17 @@ public class Person {
 	public State state=State.IDLE;
 	
 	//property variables
-	private Virus v1;
+	public Virus v1;
 	private int id;
-	private int age=0;
-	private double immunityStrength=0.0;
-	private int ticksSinceInfected=0;
-	private int ticksSinceQuarantined=0;
-	private int ticksSinceTested = simulationConfig.testCooldown;
-	private Queue<Task> tasks = new LinkedList<>();
+	public int age=0;
+	public double immunityStrength=0.0;
+	public int ticksSinceInfected=0;
+	public int ticksSinceQuarantined=0;
+	public int ticksSinceTested = simulationConfig.testCooldown;
+	public Queue<Task> tasks = new LinkedList<>();
 	
 	//config parameters from file
-	private double chanceToVisitPublic;
+	public double chanceToVisitPublic;
 	
 	public Person(Building home, Building workplace) {
 		this.home = home;
@@ -68,7 +68,7 @@ public class Person {
 		if(!tasks.isEmpty() && tasks.peek().run()) tasks.remove();			
 	}
 	
-	private void handleInfection() {
+	public void handleInfection() {
 		ticksSinceInfected++;
 		if (ticksSinceInfected>v1.infectionPeriod) {
 			Map.totalActiveInfected--;
@@ -84,11 +84,11 @@ public class Person {
 				isSymptomatic = true;
 				if(!isTestedInfected) takeTest();
 			}
-			OutputWriter.writeInfectionData(id,age, immunityStrength,spreaderId,infectionBuildingId, infectionBuildingType,isSymptomatic,isTestedInfected);
+			if(!simulationConfig.testMode) OutputWriter.writeInfectionData(id,age, immunityStrength,spreaderId,infectionBuildingId, infectionBuildingType,isSymptomatic,isTestedInfected);
 		}
 	}
 	
-	private void handleQuarantine() {
+	public void handleQuarantine() {
 		ticksSinceQuarantined++;
 		if((currentLocation==null ||currentLocation.building!=home) && tasks.isEmpty()) {
 			tasks.add(new MoveTask(this,home.getRandomLocation()));
@@ -99,7 +99,7 @@ public class Person {
 		}
 	}
 	
-	private void assignTask() {
+	public void assignTask() {
 		if(Math.random()<chanceToVisitPublic) {
 			tasks.clear();
 			Location publicLocation = pickPublicLocation();
@@ -120,10 +120,10 @@ public class Person {
 		}
 	}
 	
-	private Location pickPublicLocation() {
+	public Location pickPublicLocation() {
 		Random random = new Random();
 		Location randomPublicLocation;
-		if(simulationConfig.publicEventBuilding==null || random.nextDouble()<0.5) {
+		if(simulationConfig.publicEventBuilding==null || random.nextDouble()>simulationConfig.publicEventPopularity) {
 			Building randomPublicBuilding = Map.pickCloseBuilding(Map.public_places, currentLocation.building);
 			randomPublicLocation = randomPublicBuilding.getRandomLocation();
 		}
@@ -153,7 +153,7 @@ public class Person {
 		else return false;
 	}
 	
-	private void infectPerson() {
+	public void infectPerson() {
 		isInfected=true;
 		Map.totalInfected++;
 		Map.totalActiveInfected++;
@@ -163,7 +163,7 @@ public class Person {
 		}
 	}
 	
-	private boolean tryToKill() {
+	public boolean tryToKill() {
 		double chance = 0.0;
 		chance += v1.lethality;
 		chance -= immunityStrength;
@@ -174,10 +174,10 @@ public class Person {
 		else return false;
 	}
 	
-	private void killPerson() {
+	public void killPerson() {
 		if(currentLocation!=null) {
 			currentLocation.persons.remove(this);
-			currentLocation.building.persons.remove(this);
+			if(currentLocation.building!=null) currentLocation.building.persons.remove(this);
 		}
 		((OfficeBuilding)workplace).workers.remove(this);
 		((HouseBuilding)home).residents.remove(this);
@@ -187,10 +187,10 @@ public class Person {
 			isQuarantined=false;
 			Map.totalQuarantined--;
 		}
-		OutputWriter.writeDeathData(id,age, immunityStrength, isTestedInfected);
+		if(!simulationConfig.testMode) OutputWriter.writeDeathData(id,age, immunityStrength, isTestedInfected);
 	}
 	
-	private void takeTest() {
+	public void takeTest() {
 		ticksSinceTested = 0;
 		Map.totalTests++;
 		if(isInfected && Math.random()<0.8) {  //assumed chance of false negative is 20%
@@ -212,18 +212,18 @@ public class Person {
 		}
 	}
 
-	private int assignAge() {
+	public int assignAge() {
 		Random random = new Random();
 		int age =Math.abs((int)(random.nextGaussian()*15+35));   // mean=35 and std deviation of 15
 		return age;
 	}
 	
-	private double getImmunityStrength() {
+	public double getImmunityStrength() {
 		Random random = new Random();
-		if(this.age<15 || this.age >60){
-			return random.nextDouble()-0.2; // reducing immunity for kids and older people
-		}  
-		else return random.nextDouble();
+		if(simulationConfig.testMode) random.setSeed(420);
+		double temp = random.nextDouble();
+		if(this.age<15 || this.age >60) temp-=0.2; // reducing immunity for kids and older people
+		return temp;
 	}
 	
 }

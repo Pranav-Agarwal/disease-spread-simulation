@@ -20,7 +20,6 @@ public class simulationConfig {
 	public static int baseUpdateRate = 15;
 	public static int lockdownPeriod = 1500;
 	public static double limitedOccupancyPercentage=0.5;
-	public static double socialDistancing_radius=2.0;
 	public static int testCooldown = 500;
 	
 	//Simulation state - not taken from config, changed at runtime
@@ -60,6 +59,7 @@ public class simulationConfig {
 	public static double lethality = 0.1;
 	public static double chanceToGetSymptoms=0.4;
 	public static double infectivity= 0.5;
+	public static double spreadRange = 3.0;
 	
 	//GUI config
 	public static String houseColor="#f8fc03";
@@ -86,7 +86,6 @@ public class simulationConfig {
 		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
 		limitedOccupancyPercentage=Double.parseDouble(prop.getProperty("limitedOccupancyPercentage"));
 		testCooldown = Integer.parseInt(prop.getProperty("testCooldown"));;
-		socialDistancing_radius=Double.parseDouble(prop.getProperty("socialDistancing_radius"));
 		
 		//Virus config
 		if (virusType.equals("Influenza"))
@@ -95,6 +94,7 @@ public class simulationConfig {
 			incubationPeriod = Integer.parseInt(prop.getProperty("INFincubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("INFchanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("INFlethality"));
+			spreadRange=Double.parseDouble(prop.getProperty("INFspreadRange"));
 			infectivity=Double.parseDouble(prop.getProperty("INFinfectivity"));}
 		else if (virusType.equals("COV1")) {
 			infectionPeriod = Integer.parseInt(prop.getProperty("COV1infectionPeriod"));
@@ -102,6 +102,7 @@ public class simulationConfig {
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV1incubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV1chanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("COV1lethality"));
+			spreadRange=Double.parseDouble(prop.getProperty("COV1spreadRange"));
 			infectivity=Double.parseDouble(prop.getProperty("COV1infectivity"));
 		}
 		else {
@@ -110,6 +111,7 @@ public class simulationConfig {
 			incubationPeriod = Integer.parseInt(prop.getProperty("COV2incubationPeriod"));
 			chanceToGetSymptoms = Double.parseDouble(prop.getProperty("COV2chanceToGetSymptoms"));
 			lethality = Double.parseDouble(prop.getProperty("COV2lethality"));
+			spreadRange=Double.parseDouble(prop.getProperty("COV2spreadRange"));
 			infectivity=Double.parseDouble(prop.getProperty("COV2infectivity"));
 		}
 		

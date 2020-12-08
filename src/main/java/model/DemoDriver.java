@@ -37,11 +37,12 @@ public class DemoDriver {
 		
 		//4. Initialize the visualization and the real time graph
 		Map.realTimeChart= new Charts();
-        JFrame frame = new JFrame("Disease");
+        JFrame frame = new JFrame("Disease Visualization");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         GUICanvas canvas = new GUICanvas();
         frame.add(canvas);
         frame.pack();
+        frame.setLocationRelativeTo(null);
         if (simulationConfig.showGUI) frame.setVisible(true);
         
         //5. Initialze the output writer

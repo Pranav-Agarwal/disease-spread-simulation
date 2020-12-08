@@ -1,15 +1,10 @@
 package model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 
 class BuildingTest {
 	
@@ -45,9 +40,9 @@ class BuildingTest {
 		locs.add(new Location(1,2));
 		locs.add(new Location(1,3));
 		Building b1 = new PublicBuilding(locs);
-		b1.persons.add(new Person(new Location(1,1),new Location(1,1)));
-		b1.persons.add(new Person(new Location(1,1),new Location(1,1)));
-		b1.persons.add(new Person(new Location(1,1),new Location(1,1)));
+		b1.persons.add(new Person(b1,b1));
+		b1.persons.add(new Person(b1,b1));
+		b1.persons.add(new Person(b1,b1));
 		Assertions.assertEquals(3,b1.getCurrentOccupancy());
 	}
 	

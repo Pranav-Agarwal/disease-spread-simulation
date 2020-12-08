@@ -24,16 +24,14 @@ public class Simulator extends TimerTask{
 			actualTicks++;
 			if(actualTicks%speed==0) {
 				simTicks++;
-				if(simTicks>9000) stopSim();
+				canvas.repaint();
+				if(simTicks>18000) stopSim();
 				Map.instance.update();
 				OutputWriter.writeSimData();
 				if(simTicks%100==0) {
 					Map.updateChart();
 					Map.instance.spreadDisease(Map.offices);
 					Map.instance.spreadDisease(Map.public_places);
-				}
-				if(actualTicks%10==0) {
-					if(simulationConfig.showGUI) canvas.repaint();
 				}
 			}
 		}

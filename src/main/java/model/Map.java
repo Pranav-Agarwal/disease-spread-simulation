@@ -67,27 +67,26 @@ public class Map {
 		Random random = new Random();
 		for(int i=0;i<count;i++) {
 			Building house = houses.get(random.nextInt(houses.size()));
-			Building office = pickRandomOffice(house);
-			Person newPerson = new Person(house.getRandomLocation(),office.getRandomLocation());
+			Building office = pickCloseBuilding(offices,house);
+			Person newPerson = new Person(house,office);
 			persons.add(newPerson);
 			((HouseBuilding)house).residents.add(newPerson);
 			((OfficeBuilding)office).workers.add(newPerson);
 		}
 	}
 	
-	private Building pickRandomOffice(Building b){
+	public static Building pickCloseBuilding(List<Building> choices,Building closeTo){
 		Random random = new Random();
-		Building ans = offices.get(0);
+		Building ans = choices.get(0);
 		int minScore = Integer.MAX_VALUE;
-		for(Building o : offices) {
-			int score = random.nextInt(simulationConfig.closenessFactor) + Utils.getDistance(b,o);
+		for(Building b : choices) {
+			int score = random.nextInt(simulationConfig.closenessFactor) + Utils.getDistance(b,closeTo);
 			if(score<minScore) {
 				minScore = score;
-				ans = o;
+				ans = b;
 			}
 		}
-		return ans;
-		
+		return ans;		
 	}
 	
 	//infects a few random people

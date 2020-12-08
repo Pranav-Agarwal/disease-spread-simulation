@@ -59,7 +59,7 @@ public class GUIConfig{
 		
 		JComboBox<String> mapDropdown = new JComboBox<>();
 		mapDropdown.setModel(new DefaultComboBoxModel<String>(new String[] {"urban", "rural", "suburban"}));
-		mapDropdown.setSelectedIndex(2);
+		mapDropdown.setSelectedIndex(0);
 		mapDropdown.setBounds(120, 69, 146, 22);
 		frame.getContentPane().add(mapDropdown);
 		

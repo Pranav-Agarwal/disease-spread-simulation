@@ -29,7 +29,7 @@ public class OutputWriter {
 			infectionWriter = new FileWriter(path+"infection_data.csv",true);
 			infectionWriter.write("tick,victim_id,victim_age,victim_immunity,spreader_id,infection_building_id,infection_building,was_symptomatic,was_tested_positive\n");
 			deathWriter = new FileWriter(path+"death_data.csv",true);
-			deathWriter.write("tick,victim_id,victim_age,victim_chance_to_die,was_tested_positive\n");
+			deathWriter.write("tick,victim_id,victim_age,victim_immunity,was_tested_positive\n");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -21,6 +21,7 @@ public class simulationConfig {
 	public static int lockdownPeriod = 1500;
 	public static double limitedOccupancyPercentage=0.5;
 	public static int testCooldown = 500;
+	public static boolean testMode = true;
 	
 	//Simulation state - not taken from config, changed at runtime
 	public static Boolean hasStarted = false;
@@ -85,7 +86,8 @@ public class simulationConfig {
 		baseUpdateRate = Integer.parseInt(prop.getProperty("baseUpdateRate"));
 		lockdownPeriod = Integer.parseInt(prop.getProperty("lockdownPeriod"));
 		limitedOccupancyPercentage=Double.parseDouble(prop.getProperty("limitedOccupancyPercentage"));
-		testCooldown = Integer.parseInt(prop.getProperty("testCooldown"));;
+		testCooldown = Integer.parseInt(prop.getProperty("testCooldown"));
+		testMode = Boolean.parseBoolean(prop.getProperty("testMode"));
 		
 		//Virus config
 		if (virusType.equals("Influenza"))

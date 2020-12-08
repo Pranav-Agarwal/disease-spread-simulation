@@ -14,9 +14,9 @@ public class Map {
 	
 	static Location[][] grid;
 	static Set<Person> persons;
-	static List<Building> houses = new ArrayList<>();
-	static List<Building> offices = new ArrayList<>();
-	static List<Building> public_places = new ArrayList<>();
+	static List<Building> houses;
+	static List<Building> offices;
+	static List<Building> public_places;
 	static public Map instance;
 	static public Charts realTimeChart;
 	//properties
@@ -55,16 +55,22 @@ public class Map {
 		if(instance==null) instance = this;
 		Map.size = simulationConfig.size;
 		persons = new HashSet<>();
+		houses = new ArrayList<>();
+		offices = new ArrayList<>();
+		public_places = new ArrayList<>();
 		grid = new Location[size][size];
 		for(int i=0;i<size;i++) {
 			for(int j=0;j<size;j++) {
 				grid[i][j] = new Location(i,j);
 			}
 		}
+		
 	}
 	
 	public void addPeople(int count) {
 		Random random = new Random();
+		if(simulationConfig.testMode) random.setSeed(420);
+			
 		for(int i=0;i<count;i++) {
 			Building house = houses.get(random.nextInt(houses.size()));
 			Building office = pickCloseBuilding(offices,house);
@@ -77,6 +83,7 @@ public class Map {
 	
 	public static Building pickCloseBuilding(List<Building> choices,Building closeTo){
 		Random random = new Random();
+		if (simulationConfig.testMode) random.setSeed(420);
 		Building ans = choices.get(0);
 		int minScore = Integer.MAX_VALUE;
 		for(Building b : choices) {
@@ -93,9 +100,9 @@ public class Map {
 	public void seedVirus(int count) {
 		int counter=0;
 		for(Person p : persons) {		
-			counter++;
 			if(counter>=persons.size() || counter==count) break;
-			p.isInfected = true;		
+			p.isInfected = true;
+			counter++;
 		}
 		Map.totalActiveInfected = count;
 		Map.totalInfected = count;
@@ -106,7 +113,7 @@ public class Map {
 		int tries = 0;
 		Random random = new Random();
 		int placed = 0;
-		while(placed<=count && tries<=count*5) {
+		while(placed<count && tries<=count*5) {
 			tries++;
 			int randX = random.nextInt(size);
 			int randY = random.nextInt(size);
@@ -128,7 +135,7 @@ public class Map {
 		int tries = 0;
 		Random random = new Random();
 		int placed = 0;
-		while(placed<=count && tries<=count*5) {
+		while(placed<count && tries<=count*5) {
 			tries++;
 			int randX = random.nextInt(size);
 			int randY = random.nextInt(size);
@@ -174,9 +181,11 @@ public class Map {
 	}
 	
 	//spreads a rectangular building
-	private void spreadBuilding(Building building, List<Location> locations, int buildingSize, int sizeVariation, int row, int col, Type type) {
-		double width = Math.random()*(sizeVariation*2)+(buildingSize-sizeVariation);
-		double height = Math.random()*(sizeVariation*2)+(buildingSize-sizeVariation);
+	public double spreadBuilding(Building building, List<Location> locations, int buildingSize, int sizeVariation, int row, int col, Type type) {
+		Random random = new Random();
+		if (simulationConfig.testMode) random.setSeed(420);
+		double width = random.nextDouble()*(sizeVariation*2)+(buildingSize-sizeVariation);
+		double height = random.nextDouble()*(sizeVariation*2)+(buildingSize-sizeVariation);
 		for(int i=0;i<height;i++) {
 			if((i+row)>=size-2) break;
 			for (int j=0;j<width;j++) {
@@ -188,6 +197,7 @@ public class Map {
 				tempLocation.building = building;
 			}
 		}
+		return width*height;
 	}
 	
 	public void createPublicEvent() {

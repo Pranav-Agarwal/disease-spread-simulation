@@ -136,6 +136,7 @@ public class simulationConfig {
 			officeSizeVariation=Integer.parseInt(prop.getProperty("r_officeSizeVariation"));
 			publicMinSize=Double.parseDouble(prop.getProperty("r_publicMinSize"));
 			publicMaxSize=Double.parseDouble(prop.getProperty("r_publicMaxSize"));
+			publicEventPopularity=Double.parseDouble(prop.getProperty("r_publicEventPopularity"));
 		}
 		else if (mapType.equals("urban")) {
 			showGUI = Boolean.parseBoolean(prop.getProperty("u_showGUI"));
@@ -152,6 +153,7 @@ public class simulationConfig {
 			officeSizeVariation=Integer.parseInt(prop.getProperty("u_officeSizeVariation"));
 			publicMinSize=Double.parseDouble(prop.getProperty("u_publicMinSize"));
 			publicMaxSize=Double.parseDouble(prop.getProperty("u_publicMaxSize"));
+			publicEventPopularity=Double.parseDouble(prop.getProperty("u_publicEventPopularity"));
 		}
 		else {
 			showGUI = Boolean.parseBoolean(prop.getProperty("s_showGUI"));
@@ -168,6 +170,7 @@ public class simulationConfig {
 			officeSizeVariation=Integer.parseInt(prop.getProperty("s_officeSizeVariation"));
 			publicMinSize=Double.parseDouble(prop.getProperty("s_publicMinSize"));
 			publicMaxSize=Double.parseDouble(prop.getProperty("s_publicMaxSize"));
+			publicEventPopularity=Double.parseDouble(prop.getProperty("s_publicEventPopularity"));
 		}
 		
 		//GUI props

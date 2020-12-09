@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+
 
 class UtilsTest {
 
 	@Test
-	void TestUpdate1() {
+	void TestDistanceOfficeBuildings() {
 		
 		List<Location> locs1 = new ArrayList<>();
 		locs1.add(new Location(1,1));
@@ -24,7 +24,7 @@ class UtilsTest {
 	}
 	
 	@Test
-	void TestUpdate2() {
+	void TestDistanceHouseBuildings() {
 
 		List<Location> locs1 = new ArrayList<>();		
 		locs1.add(new Location(1,4));
@@ -39,7 +39,7 @@ class UtilsTest {
 
 
 	@Test
-	void TestUpdate3() {
+	void TestDistanceHouseBuildings2() {
 		List<Location> locs1 = new ArrayList<>();		
 		locs1.add(new Location(1,4));
 		locs1.add(new Location(1,6));		
@@ -52,7 +52,7 @@ class UtilsTest {
 	}
 	
 	@Test
-	void TestUpdate4() {
+	void TestDistanceBetnPersons() {
 		List<Location> locs1 = new ArrayList<>();		
 		locs1.add(new Location(1,4));		
 		List<Location> locs2 = new ArrayList<>();
@@ -70,7 +70,7 @@ class UtilsTest {
 	
  	@Test
  
-	void TestUpdate5() {
+	void TestDistanceBetnPersons2() {
 		List<Location> locs1 = new ArrayList<>();		
 		locs1.add(new Location(1,6));		
 		List<Location> locs2 = new ArrayList<>();

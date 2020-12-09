@@ -38,7 +38,7 @@ public class OutputWriter {
 	public static void writeSimData() {
 		try {
 			simWriter.write(
-					Simulator.simTicks
+					Simulator.simTicks/100
 					+","+Map.totalInfected
 					+","+Map.totalActiveInfected
 					+","+Map.totalDead

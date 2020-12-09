@@ -25,7 +25,7 @@ public class OutputWriter {
 		}
 		try {
 			simWriter = new FileWriter(path+"sim_data.csv",true);
-			simWriter.write("tick,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests,maskEnforcement,lockdownOnTest,officeLockdown,publicLockdown,publicEvent,quarantine,contactTrace,socialDistancing\n");
+			simWriter.write("day,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests,maskEnforcement,lockdownOnTest,officeLockdown,publicLockdown,publicEvent,quarantine,contactTrace,socialDistancing\n");
 			infectionWriter = new FileWriter(path+"infection_data.csv",true);
 			infectionWriter.write("tick,victim_id,victim_age,victim_immunity,spreader_id,infection_building_id,infection_building,was_symptomatic,was_tested_positive\n");
 			deathWriter = new FileWriter(path+"death_data.csv",true);

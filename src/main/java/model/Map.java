@@ -10,6 +10,7 @@ import java.util.Set;
 import model.Location.Type;
 import model.Person.State;
 
+//Represents the 2D grid containing people and buildings on which the virus will be released.
 public class Map {
 	
 	static Location[][] grid;

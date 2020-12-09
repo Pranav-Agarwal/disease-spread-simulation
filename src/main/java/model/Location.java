@@ -4,7 +4,7 @@ package model;
 import java.util.HashSet;
 import java.util.Set;
 
-//represents a grid quare on the map
+//represents a grid square on the map
 public class Location {
 	
 	public static enum Type {HOUSE,WORK,PUBLIC,EMPTY};

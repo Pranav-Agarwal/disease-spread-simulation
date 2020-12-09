@@ -27,9 +27,9 @@ public class Simulator extends TimerTask{
 				canvas.repaint();
 				if(simTicks>18000) stopSim();
 				Map.instance.update();
-				OutputWriter.writeSimData();
 				if(simTicks%100==0) {
 					Map.updateChart();
+					OutputWriter.writeSimData();
 					Map.instance.spreadDisease(Map.offices);
 					Map.instance.spreadDisease(Map.public_places);
 				}

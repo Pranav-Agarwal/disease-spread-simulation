@@ -22,6 +22,7 @@ public class simulationConfig {
 	public static double limitedOccupancyPercentage=0.5;
 	public static int testCooldown = 500;
 	public static boolean testMode = true;
+	public static int maximumTicks=18000;
 	
 	//Simulation state - not taken from config, changed at runtime
 	public static Boolean hasStarted = false;
@@ -89,6 +90,7 @@ public class simulationConfig {
 		limitedOccupancyPercentage=Double.parseDouble(prop.getProperty("limitedOccupancyPercentage"));
 		testCooldown = Integer.parseInt(prop.getProperty("testCooldown"));
 		testMode = Boolean.parseBoolean(prop.getProperty("testMode"));
+		maximumTicks = Integer.parseInt(prop.getProperty("maximumTicks"));
 		
 		//Virus config
 		if (virusType.equals("Influenza"))

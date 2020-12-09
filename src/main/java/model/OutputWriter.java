@@ -9,9 +9,9 @@ import java.time.format.DateTimeFormatter;
 //Class that takes the map state and outputs it to csv files
 public class OutputWriter {
 	
-	private static FileWriter simWriter;
-	private static FileWriter infectionWriter;
-	private static FileWriter deathWriter;
+	public static FileWriter simWriter;
+	public static FileWriter infectionWriter;
+	public static FileWriter deathWriter;
 	public static String path;
 	
 	public OutputWriter() {

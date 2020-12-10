@@ -30,7 +30,7 @@ public class Simulator extends TimerTask{
 				if(simTicks%100==0) {
 					Map.updateChart();
 					OutputWriter.writeSimData();
-					Map.instance.spreadDisease(Map.offices);
+			        Map.instance.spreadDisease(Map.offices);
 					Map.instance.spreadDisease(Map.public_places);
 				}
 			}

@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,7 +16,12 @@ class PersonTest {
 	static Building b3;
 	@BeforeEach
 	void setupState() {
-		new Map();
+		try {
+			new simulationConfig("config.properties");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		new Map();		
 		List<Location> locs = new ArrayList<>();
 		locs.add(new Location(1,1));
 		locs.add(new Location(1,2));

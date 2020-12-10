@@ -102,11 +102,26 @@ public class Map {
 		int counter=0;
 		for(Person p : persons) {		
 			if(counter>=persons.size() || counter==count) break;
+			
 			p.isInfected = true;
 			counter++;
 		}
 		Map.totalActiveInfected = count;
 		Map.totalInfected = count;
+	}
+	
+	
+	//infects a few random people
+	public void seedVirusToHold(int count) {
+		int counter=0;
+		for(Person p : persons) {		
+			if(counter>=persons.size() || counter==count) break;
+			if(p.isImmune==false)
+			{p.isInfected = true;
+			counter++;}			
+		}
+		Map.totalActiveInfected += count;
+		Map.totalInfected += count;
 	}
 	
 	//seeds public spaces

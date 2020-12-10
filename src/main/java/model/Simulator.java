@@ -28,10 +28,13 @@ public class Simulator extends TimerTask{
 				if(simTicks>18000) stopSim();
 				Map.instance.update();
 				if(simTicks%100==0) {
+					if(Map.totalActiveInfected<=5) 
+					{Map.instance.seedVirusToHold(simulationConfig.virusSeedCount);}
 					Map.updateChart();
 					OutputWriter.writeSimData();
 					Map.instance.spreadDisease(Map.offices);
 					Map.instance.spreadDisease(Map.public_places);
+
 				}
 			}
 		}
@@ -42,6 +45,12 @@ public class Simulator extends TimerTask{
 		playing = false;
 		OutputWriter.closeAndSave();
 		Map.realTimeChart.saveBitmapImage();
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			
+			e.printStackTrace();
+		}
 		System.exit(0);
 	}
 

@@ -6,12 +6,6 @@ target
 # Log file
 *.log
 
-#output file
-*.csv
-
-#output graph
-*.png
-
 # BlueJ files
 *.ctxt
 

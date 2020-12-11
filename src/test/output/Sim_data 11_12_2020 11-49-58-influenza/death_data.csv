@@ -1,0 +1,2 @@
+tick,victim_id,victim_age,victim_immunity,was_tested_positive
+0,1,35,0.5,false

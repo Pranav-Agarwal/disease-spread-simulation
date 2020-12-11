@@ -1,2 +1,0 @@
-Avg (R Nought)	2.679510703
-Std Deviation	2.477552261

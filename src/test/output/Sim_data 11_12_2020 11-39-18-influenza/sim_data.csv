@@ -1,2 +1,0 @@
-day,total infections,active infections,total dead,total immune,total quarantined,total tests,total positive tests,maskEnforcement,lockdownOnTest,officeLockdown,publicLockdown,publicEvent,quarantine,contactTrace,socialDistancing
-0,0,0,0,0,0,0,0,false,false,false,false,false,false,false,false

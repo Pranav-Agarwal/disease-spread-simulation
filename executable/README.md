@@ -1,1 +1,1 @@
-This folder has all the binary and configuration to run the simulation
+This folder has all the binary and configurations to run the simulation. You need to keep the config.properties file in the same location as the jar then simply double click the Jar to run it. The analysis excel has been used to find R and standard deviation of each scenario.
